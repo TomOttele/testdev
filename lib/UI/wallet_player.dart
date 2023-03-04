@@ -1,22 +1,16 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:testdev/UI/widgets/choicechip_data.dart';
 import 'package:testdev/UI/widgets/choicechip.dart';
+import 'package:testdev/UI/widgets/wallet_transaction.dart';
 import 'package:testdev/application/theme_Service.dart';
-import 'package:flutter/services.dart';
-import 'dart:io';
-import 'dart:async';
-import 'package:flag/flag_enum.dart';
-import 'package:flag/flag_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:testdev/UI/widgets/separator.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:testdev/UI/widgets/Xdata.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:testdev/UI/widgets/sortable_page.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:path/path.dart';
 import 'package:flutter_polygon/flutter_polygon.dart';
 import 'package:circular_profile_avatar/circular_profile_avatar.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class WalletPage extends StatefulWidget {
   const WalletPage({Key? key}) : super(key: key);
@@ -50,17 +44,62 @@ class WalletPage extends StatefulWidget {
   static map(ChoiceChip Function(dynamic choiceChip) param0) {}
 }*/
 
+// FLutter Toast Message
+Future showToast(String message) async {
+  await Fluttertoast.cancel();
+  Fluttertoast.showToast(msg: message, fontSize: 18);
+}
+
 class _WalletPageState extends State<WalletPage> {
+  late ScrollController controller;
   final double spacing = 8;
+  final isDialOpen = ValueNotifier(false);
 
   List<ChoiceChipData> choiceChips = ChoiceChips.all;
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return Consumer<ThemeService>(
-      builder: (context, themeService, child) {
-        return Scaffold(
+    return Consumer<ThemeService>(builder: (context, themeService, child) {
+      return WillPopScope(
+        onWillPop: () async {
+          if (isDialOpen.value) {
+            isDialOpen.value = false;
+            return false;
+          } else {
+            return true;
+          }
+        },
+        child: Scaffold(
+          floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+          floatingActionButton: SpeedDial(
+            animatedIcon: AnimatedIcons.menu_close,
+            overlayColor: Colors.black,
+            overlayOpacity: 0.3,
+            spacing: 12,
+            elevation: 20,
+            spaceBetweenChildren: 15,
+            closeManually: false,
+            openCloseDial: isDialOpen,
+            children: [
+              //
+              SpeedDialChild(
+                  child: Icon(Icons.mail),
+                  label: 'Mail',
+                  backgroundColor: Theme.of(context).colorScheme.onPrimary),
+
+              //
+              SpeedDialChild(
+                  child: Icon(Icons.mail),
+                  label: 'Mail',
+                  backgroundColor: Theme.of(context).colorScheme.onPrimary),
+              //
+              SpeedDialChild(
+                  child: Icon(Icons.mail),
+                  onTap: () => showToast('Selected Twitter...'),
+                  backgroundColor: Theme.of(context).colorScheme.onPrimary)
+            ],
+          ),
           //
           body: NestedScrollView(
             headerSliverBuilder: (context, innerBoxIsScrolled) {
@@ -73,14 +112,8 @@ class _WalletPageState extends State<WalletPage> {
                   backgroundColor: Theme.of(context).colorScheme.onPrimary,
                   elevation: 0,
                   centerTitle: true,
-                  title: const Text(
-                    '25.807,64€',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      fontSize: 22,
-                    ),
-                  ),
+                  title: Text('25.907,64€',
+                      style: Theme.of(context).textTheme.displayMedium),
                 ),
                 SliverToBoxAdapter(
                   child: Column(
@@ -88,7 +121,7 @@ class _WalletPageState extends State<WalletPage> {
                       Container(
                         decoration: BoxDecoration(
                           color: Theme.of(context).colorScheme.onPrimary,
-                          borderRadius: BorderRadius.only(
+                          borderRadius: const BorderRadius.only(
                               bottomLeft: Radius.circular(15),
                               bottomRight: Radius.circular(15)),
                         ),
@@ -104,15 +137,14 @@ class _WalletPageState extends State<WalletPage> {
                                         MainAxisAlignment.spaceBetween,
                                     children: <Widget>[
                                       Align(
-                                        alignment: Alignment(-0.85, 0),
-                                        child: StackItem2(size: size * 0.9),
+                                        child: StackItem2(size: size),
                                       ),
                                       Align(
-                                          alignment: Alignment(0, 0),
-                                          child: StackItem1(size: size)),
+                                        child: StackItem1(size: size),
+                                      ),
                                       Align(
-                                          alignment: const Alignment(0.85, 0),
-                                          child: StackItem3(size: size * 0.9)),
+                                        child: StackItem3(size: size),
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -129,69 +161,147 @@ class _WalletPageState extends State<WalletPage> {
                 ),
               ];
             },
-            body: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: Column(
-                  children: <Widget>[
-                    Container(
-                      child: Stack(
-                        children: <Widget>[
-                          SafeArea(
-                            child: Column(
-                              children: [
-                                buildChoiceChips(),
-                                Column(
-                                  children: [
-                                    const Separator(),
-                                    Container(
-                                      height: size.height * 0.25,
-                                      width: size.width * 1,
-                                      decoration: BoxDecoration(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .onPrimary,
-                                          borderRadius:
-                                              BorderRadius.circular(15)),
+            //
+            // Body
+            //
+            body: SafeArea(
+              child: ListView(
+                //controller: controller,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Column(
+                      children: <Widget>[
+                        Stack(
+                          children: <Widget>[
+                            SafeArea(
+                              child: Column(
+                                children: [
+                                  //
+                                  //
+                                  //
+                                  buildChoiceChips(),
+                                  //
+                                  //
+                                  //
+
+                                  const Separator(),
+
+                                  //
+                                  //
+                                  //
+
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        '  Transactions',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .displaySmall,
+                                      )
+                                    ],
+                                  ),
+                                  SizedBox(height: 10),
+                                  Container(
+                                    height: size.height * 0.27,
+                                    width: size.width * 1,
+                                    decoration: BoxDecoration(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .primaryContainer,
+                                      borderRadius: BorderRadius.circular(15),
                                     ),
-                                    const Separator(),
-                                    Container(
-                                      height: size.height * 0.25,
-                                      width: size.width * 1,
-                                      decoration: BoxDecoration(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .onPrimary,
-                                          borderRadius:
-                                              BorderRadius.circular(15)),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      // ignore: prefer_const_literals_to_create_immutables
+                                      children: <Widget>[
+                                        Expanded(child: WalletTransaction())
+                                      ],
                                     ),
-                                    const Separator(),
-                                    Container(
-                                      height: size.height * 0.25,
-                                      width: size.width * 1,
-                                      decoration: BoxDecoration(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .onPrimary,
-                                          borderRadius:
-                                              BorderRadius.circular(15)),
+                                  ),
+
+                                  //
+                                  //
+                                  const Separator(),
+                                  const Separator(),
+
+                                  //
+                                  //
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        '  Me',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .displaySmall,
+                                      )
+                                    ],
+                                  ),
+                                  Container(
+                                    height: size.height * 0.27,
+                                    width: size.width * 1,
+                                    decoration: BoxDecoration(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onPrimary,
+                                      borderRadius: BorderRadius.circular(15),
                                     ),
-                                  ],
-                                ),
-                              ],
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                        Expanded(child: WalletTransaction())
+                                      ],
+                                    ),
+                                  ),
+
+                                  //
+                                  //
+                                  const Separator(),
+                                  const Separator(),
+                                  //
+                                  //
+                                  Container(
+                                    height: size.height * 0.25,
+                                    width: size.width * 1,
+                                    decoration: BoxDecoration(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onPrimary,
+                                        borderRadius:
+                                            BorderRadius.circular(15)),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                        ListTile(
+                                          title: Text('Choose your acount',
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .displayMedium),
+                                        ),
+
+                                        //
+                                        //
+                                      ],
+                                    ),
+                                  ),
+                                  const SizedBox(height: 70),
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
+                          ],
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),
-        );
-      },
-    );
+        ),
+      );
+    });
   }
 
   Widget buildChoiceChips() => SingleChildScrollView(
@@ -201,16 +311,20 @@ class _WalletPageState extends State<WalletPage> {
           children: choiceChips
               .map(
                 (choiceChip) => Padding(
-                  padding: const EdgeInsets.all(2),
+                  padding: const EdgeInsets.symmetric(horizontal: 3),
                   child: ChoiceChip(
+                    selected: choiceChip.isSelected,
+                    selectedColor: choiceChip.selectedColor,
+                    backgroundColor: choiceChip.unselectedColor,
                     label: Text(choiceChip.label),
-                    labelStyle: TextStyle(color: Colors.white),
+                    labelStyle: Theme.of(context).textTheme.bodyLarge,
                     onSelected: (isSelected) => setState(() {
                       choiceChips = choiceChips.map((otherChip) {
                         final newChip = otherChip.copy(
                           label: choiceChip.label,
                           textColor: choiceChip.textColor,
                           selectedColor: choiceChip.selectedColor,
+                          unselectedColor: choiceChip.unselectedColor,
                           isSelected: false,
                         );
 
@@ -219,13 +333,12 @@ class _WalletPageState extends State<WalletPage> {
                                 isSelected: isSelected,
                                 label: choiceChip.label,
                                 textColor: choiceChip.textColor,
-                                selectedColor: choiceChip.selectedColor)
+                                selectedColor: choiceChip.selectedColor,
+                                unselectedColor: const Color(252525),
+                              )
                             : newChip;
                       }).toList();
                     }),
-                    selected: choiceChip.isSelected,
-                    selectedColor: Colors.grey,
-                    backgroundColor: Colors.transparent,
                   ),
                 ),
               )
@@ -249,8 +362,8 @@ class StackItem1 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: size.width * 0.25,
+    return SizedBox(
+      width: size.width * 0.24,
       child: Stack(
         children: <Widget>[
           Column(
@@ -273,14 +386,17 @@ class StackItem1 extends StatelessWidget {
                   ),
                 ),
               ),
-              Text("Lionel Messi",
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      fontSize: 17)),
+              Text("Lionel Messi ",
+                  textAlign: TextAlign.center,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.bodyLarge),
               Text(
                 "3.815€",
-                style: TextStyle(color: Colors.grey, fontSize: 14),
+                textAlign: TextAlign.center,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.bodyMedium,
               ),
             ],
           )
@@ -306,8 +422,8 @@ class StackItem2 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: size.width * 0.25,
+    return SizedBox(
+      width: size.width * 0.24,
       child: Stack(
         children: <Widget>[
           Column(
@@ -317,7 +433,7 @@ class StackItem2 extends StatelessWidget {
                 sides: 6,
                 borderRadius: 8,
                 child: Container(
-                  color: Color.fromARGB(255, 190, 190, 190),
+                  color: const Color.fromARGB(255, 190, 190, 190),
                   padding: const EdgeInsets.all(3.0),
                   child: ClipPolygon(
                     sides: 6,
@@ -330,14 +446,17 @@ class StackItem2 extends StatelessWidget {
                   ),
                 ),
               ),
-              Text("Lionel Messi",
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      fontSize: 16)),
+              Text("Lionel Messi da cruz",
+                  textAlign: TextAlign.center,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.bodyLarge),
               Text(
                 "3.815€",
-                style: TextStyle(color: Colors.grey, fontSize: 14),
+                textAlign: TextAlign.center,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.bodyMedium,
               ),
             ],
           )
@@ -364,8 +483,8 @@ class StackItem3 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: size.width * 0.25,
+    return SizedBox(
+      width: size.width * 0.24,
       child: Stack(
         children: <Widget>[
           Column(
@@ -375,7 +494,7 @@ class StackItem3 extends StatelessWidget {
                 sides: 6,
                 borderRadius: 8,
                 child: Container(
-                  color: Color.fromARGB(255, 105, 28, 0),
+                  color: const Color.fromARGB(255, 105, 28, 0),
                   padding: const EdgeInsets.all(3.0),
                   child: ClipPolygon(
                     sides: 6,
@@ -389,14 +508,15 @@ class StackItem3 extends StatelessWidget {
                 ),
               ),
               Text("Lionel Messi",
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      fontSize: 16)),
-              Text(
-                "3.815€",
-                style: TextStyle(color: Colors.grey, fontSize: 14),
-              ),
+                  textAlign: TextAlign.center,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.bodyLarge),
+              Text("3.815€",
+                  textAlign: TextAlign.center,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.bodyMedium),
             ],
           )
         ],

@@ -3,14 +3,14 @@ import 'package:testdev/data/usersT.dart';
 import 'package:testdev/data/userT.dart';
 import 'package:flutter/material.dart';
 
-class SortablePage extends StatefulWidget {
-  const SortablePage({super.key});
+class WalletTransaction extends StatefulWidget {
+  const WalletTransaction({super.key});
 
   @override
-  _SortablePageState createState() => _SortablePageState();
+  _WalletTransactionState createState() => _WalletTransactionState();
 }
 
-class _SortablePageState extends State<SortablePage> {
+class _WalletTransactionState extends State<WalletTransaction> {
   late List<User> users;
   int? sortColumnIndex;
   bool isAscending = false;
@@ -24,14 +24,20 @@ class _SortablePageState extends State<SortablePage> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        body: buildDataTable(),
-      );
+          body: ScrollableWidget(
+        child: buildDataTable(),
+      ));
 
   Widget buildDataTable() {
-    final columns = ['', '', '', ''];
+    final columns = [
+      '',
+      '',
+      '',
+      '',
+    ];
 
     return DataTable(
-      dataTextStyle: Theme.of(context).textTheme.bodyText2,
+      dataTextStyle: Theme.of(context).textTheme.bodyMedium,
       headingRowHeight: 0,
       showBottomBorder: false,
       dividerThickness: 0,
@@ -47,16 +53,22 @@ class _SortablePageState extends State<SortablePage> {
             label: Expanded(
                 child: Text(
               column,
-              textAlign: TextAlign.center,
+              textAlign: TextAlign.left,
               maxLines: 1,
-              overflow: TextOverflow.ellipsis,
+              overflow: TextOverflow.visible,
+              softWrap: true,
             )),
             onSort: onSort,
           ))
       .toList();
 
   List<DataRow> getRows(List<User> users) => users.map((User user) {
-        final cells = [user.clubname, user.team, user.function, user.number];
+        final cells = [
+          user.name,
+          user.transactionReason,
+          user.transactionAmount,
+          user.transactionDate,
+        ];
 
         return DataRow(
             cells: getCells(
@@ -66,30 +78,28 @@ class _SortablePageState extends State<SortablePage> {
 
   List<DataCell> getCells(List<dynamic> cells) => cells
       .map((data) => DataCell(
-            Container(
-              width: 50,
+            SizedBox(
+              width: 95,
               child: Text(
                 '$data',
+                textAlign: TextAlign.left,
                 maxLines: 1,
-                overflow: TextOverflow.visible,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
           ))
       .toList();
 
   void onSort(int columnIndex, bool ascending) {
-    if (columnIndex == 0) {
-      users.sort((user1, user2) =>
-          compareString(ascending, user1.clubname, user2.clubname));
-    } else if (columnIndex == 1) {
-      users.sort(
-          (user1, user2) => compareString(ascending, user1.team, user2.team));
+    if (columnIndex == 1) {
+      users.sort((user1, user2) => compareString(
+          ascending, user1.transactionReason, user2.transactionReason));
     } else if (columnIndex == 2) {
-      users.sort((user1, user2) =>
-          compareString(ascending, user1.function, user2.function));
+      users.sort((user1, user2) => compareString(
+          ascending, user1.transactionDate, user2.transactionDate));
     } else if (columnIndex == 3) {
-      users.sort((user1, user2) =>
-          compareString(ascending, user1.number, user2.number));
+      users.sort((user1, user2) => compareString(
+          ascending, user1.transactionAmount, user2.transactionAmount));
     }
 
     setState(() {

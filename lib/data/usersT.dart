@@ -1,7 +1,50 @@
 import 'package:testdev/data/userT.dart';
 
 final allUsers = <User>[
-  User(clubname: 'Borussia Dortmund', team: 'U19', function: 'Coach'),
-  User(clubname: 'Borussia Dortmund', team: 'U23', function: 'Physio'),
-  User(clubname: 'Eintrach Trier', team: 'II', function: 'Player'),
+  User(
+    name: 'Alexander Schmit',
+    transactionAmount: '50€',
+    transactionDate: '12.08',
+    clubname: 'Borussia Dortmund ',
+    transactionReason: 'Late training',
+    team: 'U19',
+    function: 'Coach',
+    number: '7',
+  ),
+  User(
+      name: 'Leo Reus',
+      transactionAmount: '75€',
+      transactionDate: '12.08',
+      clubname: 'Borussia Dortmund',
+      transactionReason: 'Late game',
+      team: 'U23',
+      function: 'Physio',
+      number: '9'),
+  User(
+      name: 'Sam Kurz',
+      transactionAmount: '20€',
+      transactionDate: '12.08',
+      transactionReason: 'Wrong equipment',
+      clubname: 'Eintrach Trier',
+      team: 'II',
+      function: 'Player',
+      number: '11'),
+  User(
+      name: 'Sam Kurz',
+      transactionAmount: '100€',
+      transactionDate: '12.08',
+      transactionReason: 'Pissed in shower',
+      clubname: 'Eintrach Trier',
+      team: 'II',
+      function: 'Player',
+      number: '11'),
+  User(
+      name: 'Sam Kurz',
+      transactionAmount: '25€',
+      transactionDate: '12.08',
+      transactionReason: 'Pissed in shower',
+      clubname: 'Eintrach Trier',
+      team: 'II',
+      function: 'Player',
+      number: '11'),
 ];

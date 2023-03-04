@@ -44,6 +44,13 @@ dependencies:
   #store image
 
   path_provider: ^2.0.11
+
+
+  #floatingactionbutton
+  flutter_speed_dial: ^6.2.0
+
+    #flutter toast message
+  fluttertoast: ^8.0.9
  
  
  

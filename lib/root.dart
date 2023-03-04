@@ -6,6 +6,7 @@ import 'package:testdev/UI/more_player.dart';
 
 import 'package:testdev/UI/stat_player.dart';
 import 'package:testdev/UI/wallet_player.dart';
+import 'package:testdev/UI/widgets/scroll_to_hide_widget.dart';
 
 class RootWidget extends StatefulWidget {
   const RootWidget({super.key});
@@ -15,6 +16,19 @@ class RootWidget extends StatefulWidget {
 }
 
 class _RootWidgetState extends State<RootWidget> {
+  late ScrollController controller;
+
+  void iniState() {
+    super.initState();
+    controller = ScrollController();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
   int _currentIndex = 0;
   List<Widget> body = const [
     Icon(Icons.wallet),
@@ -27,49 +41,67 @@ class _RootWidgetState extends State<RootWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: IndexedStack(
-        index: _currentIndex,
-        children: const [
-          HomePage(),
-          WalletPage(),
-          ChatPage(),
-          StatPage(),
-          MorePage()
-        ],
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Theme.of(context).bottomAppBarTheme.color,
-        type: BottomNavigationBarType.fixed,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
-        currentIndex: _currentIndex,
-        unselectedItemColor: Colors.grey,
-        selectedItemColor: Colors.white,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.home,
+      body: Stack(
+        children: [
+          IndexedStack(
+            index: _currentIndex,
+            children: [
+              HomePage(),
+              WalletPage(),
+              ChatPage(),
+              PlayerStat(),
+              MorePage()
+            ],
+          ),
+          Align(
+            alignment: const Alignment(0, 1),
+            child: Padding(
+              padding: const EdgeInsets.only(left: 45, right: 45, bottom: 0),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                // child: ScrollToHideWidget(
+                // controller: controller,
+                child: BottomNavigationBar(
+                  backgroundColor: Theme.of(context).bottomAppBarTheme.color,
+                  type: BottomNavigationBarType.fixed,
+                  showSelectedLabels: false,
+                  elevation: 0,
+                  showUnselectedLabels: false,
+                  onTap: (index) {
+                    setState(() {
+                      _currentIndex = index;
+                    });
+                  },
+                  currentIndex: _currentIndex,
+                  unselectedItemColor: Colors.grey,
+                  selectedItemColor: Colors.white,
+                  items: const [
+                    BottomNavigationBarItem(
+                      icon: Icon(
+                        Icons.home,
+                      ),
+                      label: 'Home',
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.savings),
+                      label: 'Wallet',
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.chat),
+                      label: 'Chat',
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.assessment),
+                      label: 'Stat',
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.menu),
+                      label: 'More',
+                    ),
+                  ],
+                ),
+              ),
             ),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.savings),
-            label: 'Wallet',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.chat),
-            label: 'Chats',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.assessment),
-            label: 'Stats',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.menu),
-            label: 'More',
           ),
         ],
       ),

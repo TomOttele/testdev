@@ -59,6 +59,7 @@ class _SettingPageState extends State<SettingPage> {
 
   Future _showBottomSheet(context) {
     return showModalBottomSheet(
+        backgroundColor: Theme.of(context).colorScheme.onPrimary,
         isScrollControlled: true,
         context: context,
         builder: (context) {
@@ -119,6 +120,8 @@ class _SettingPageState extends State<SettingPage> {
                     child: const Text('Account selection'),
                     onTap: () {
                       showModalBottomSheet(
+                          backgroundColor:
+                              Theme.of(context).colorScheme.onPrimary,
                           isScrollControlled: true,
                           shape: const RoundedRectangleBorder(
                             borderRadius:
@@ -197,16 +200,23 @@ class _SettingPageState extends State<SettingPage> {
               //
 
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                Text('Tom Ottelé',
-                    style: Theme.of(context).textTheme.headline1),
+                Expanded(
+                  child: Text('Cristiano Ronaldo da Silva Da Cruz ',
+                      textAlign: TextAlign.start,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.headline1),
+                ),
                 CircleAvatar(
                   maxRadius: 30,
                   backgroundImage: image != null
                       ? FileImage(image!) as ImageProvider
                       : const AssetImage(
-                          'https://i.goalzz.com/?i=ashraf-zamrani%2Flionelmessi.gif'),
+                          'assets/images/cristiano_ronaldo.webp'),
                   child: InkWell(onTap: () {
                     showModalBottomSheet(
+                        backgroundColor:
+                            Theme.of(context).colorScheme.onPrimary,
                         isScrollControlled: true,
                         shape: const RoundedRectangleBorder(
                             borderRadius: BorderRadius.vertical(
@@ -288,6 +298,8 @@ class _SettingPageState extends State<SettingPage> {
                       style: Theme.of(context).textTheme.bodyText1),
                   onTap: () {
                     showModalBottomSheet(
+                        backgroundColor:
+                            Theme.of(context).colorScheme.onPrimary,
                         isScrollControlled: true,
                         context: context,
                         builder: (context) {
@@ -342,6 +354,7 @@ class _SettingPageState extends State<SettingPage> {
                       style: Theme.of(context).textTheme.bodyText1),
                   onTap: () {
                     showModalBottomSheet(
+                      backgroundColor: Theme.of(context).colorScheme.onPrimary,
                       isScrollControlled: true,
                       shape: const RoundedRectangleBorder(
                           borderRadius:
@@ -406,6 +419,7 @@ class _SettingPageState extends State<SettingPage> {
                       style: Theme.of(context).textTheme.bodyText1),
                   onTap: () {
                     showModalBottomSheet(
+                      backgroundColor: Theme.of(context).colorScheme.onPrimary,
                       isScrollControlled: true,
                       shape: const RoundedRectangleBorder(
                           borderRadius:
@@ -475,6 +489,7 @@ class _SettingPageState extends State<SettingPage> {
                 ),
                 onTap: () {
                   showModalBottomSheet(
+                    backgroundColor: Theme.of(context).colorScheme.onPrimary,
                     isScrollControlled: true,
                     shape: const RoundedRectangleBorder(
                         borderRadius:
@@ -534,6 +549,8 @@ class _SettingPageState extends State<SettingPage> {
                       style: Theme.of(context).textTheme.bodyText1),
                   onTap: () {
                     showModalBottomSheet(
+                        backgroundColor:
+                            Theme.of(context).colorScheme.onPrimary,
                         isScrollControlled: true,
                         shape: const RoundedRectangleBorder(
                             borderRadius: BorderRadius.vertical(
@@ -683,6 +700,7 @@ class _SettingPageState extends State<SettingPage> {
                     style: Theme.of(context).textTheme.bodyText1),
                 onTap: () {
                   showModalBottomSheet(
+                    backgroundColor: Theme.of(context).colorScheme.onPrimary,
                     isScrollControlled: true,
                     shape: const RoundedRectangleBorder(
                         borderRadius:
@@ -771,6 +789,7 @@ class _SettingPageState extends State<SettingPage> {
                       style: Theme.of(context).textTheme.bodyText1),
                   onTap: () {
                     showModalBottomSheet(
+                      backgroundColor: Theme.of(context).colorScheme.onPrimary,
                       isScrollControlled: true,
                       shape: const RoundedRectangleBorder(
                           borderRadius:
@@ -856,6 +875,8 @@ class _SettingPageState extends State<SettingPage> {
                       style: Theme.of(context).textTheme.bodyText1),
                   onTap: () {
                     showModalBottomSheet(
+                        backgroundColor:
+                            Theme.of(context).colorScheme.onPrimary,
                         isScrollControlled: true,
                         shape: const RoundedRectangleBorder(
                             borderRadius: BorderRadius.vertical(
@@ -991,6 +1012,8 @@ class _SettingPageState extends State<SettingPage> {
                       style: Theme.of(context).textTheme.bodyText1),
                   onTap: () {
                     showModalBottomSheet(
+                        backgroundColor:
+                            Theme.of(context).colorScheme.onPrimary,
                         isScrollControlled: true,
                         shape: const RoundedRectangleBorder(
                             borderRadius: BorderRadius.vertical(
@@ -1037,7 +1060,9 @@ class _SettingPageState extends State<SettingPage> {
                   leading: const Icon(Icons.logout, color: Colors.red),
                   onTap: () {
                     showModalBottomSheet(
-                        isScrollControlled: true,
+                        backgroundColor:
+                            Theme.of(context).colorScheme.onPrimary,
+                        isScrollControlled: false,
                         shape: const RoundedRectangleBorder(
                             borderRadius: BorderRadius.vertical(
                                 top: Radius.circular(15))),
@@ -1054,10 +1079,7 @@ class _SettingPageState extends State<SettingPage> {
                                           .textTheme
                                           .headline1),
                                 ),
-                                Container(
-                                    constraints:
-                                        BoxConstraints.tightForFinite(),
-                                    child: SortablePage()),
+                                Expanded(child: SortablePage()),
                               ],
                             ),
                           );
