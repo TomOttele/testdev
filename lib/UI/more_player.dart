@@ -1,35 +1,137 @@
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:testdev/UI/widgets/telephone_form.dart';
 
-class MorePage extends StatelessWidget {
+class MorePage extends StatefulWidget {
   const MorePage({Key? key}) : super(key: key);
 
   @override
+  State<MorePage> createState() => _MorePageState();
+}
+
+class _MorePageState extends State<MorePage> with TickerProviderStateMixin {
+  @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 2,
-      child: Scaffold(
-        appBar: AppBar(
-          elevation: 0.0,
-          centerTitle: false,
-          backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-          title: Text("More", style: Theme.of(context).textTheme.headline1),
-        ),
-        // ignore: prefer_const_constructors
-        body: Column(
-          children: [
-            const TabBar(
-              tabs: [
-                Tab(
-                  text: 'Games',
-                ),
-                Tab(
-                  text: 'Training',
-                )
-              ],
-            ),
-          ],
-        ),
+    final size = MediaQuery.of(context).size;
+    TabController tabController = TabController(length: 4, vsync: this);
+    return Scaffold(
+      appBar: AppBar(
+        elevation: 0.0,
+        centerTitle: false,
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+        title: Text("More", style: Theme.of(context).textTheme.displayLarge),
+      ),
+      //
+      //
+      //
+      body: Column(
+        children: [
+          SizedBox(
+            height: size.height * 0.01,
+          ),
+          //
+          // TabBar
+          //
+          Align(
+            alignment: Alignment.centerLeft,
+            child: TabBar(
+                labelStyle: Theme.of(context).textTheme.bodyMedium,
+                controller: tabController,
+                indicatorColor: Colors.transparent,
+                labelPadding: const EdgeInsets.only(left: 15, right: 15),
+                isScrollable: true,
+                tabs: const [
+                  Tab(text: 'All'),
+                  Tab(text: 'Transactions'),
+                  Tab(text: 'Ranking'),
+                  Tab(text: 'Me')
+                ]),
+          ),
+          //
+          // TabBarView
+          //
+          Expanded(
+            child: TabBarView(
+                controller: tabController,
+                physics: const BouncingScrollPhysics(
+                    parent: AlwaysScrollableScrollPhysics()),
+                children: [
+                  //
+                  //
+                  //
+                  SingleChildScrollView(
+                    child: SafeArea(
+                      child: Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: Column(children: [
+                          Container(
+                            height: 800,
+                            width: double.maxFinite,
+                            color: Colors.green,
+                          ),
+                        ]),
+                      ),
+                    ),
+                  ),
+                  //
+                  //
+                  //
+
+                  SingleChildScrollView(
+                    child: SafeArea(
+                      child: Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: Column(children: [
+                          Container(
+                            height: 800,
+                            width: double.maxFinite,
+                            color: Colors.yellow,
+                            child: TelephoneNumber(
+                                labelText: 'labelText', maxLenght: 20),
+                          ),
+                        ]),
+                      ),
+                    ),
+                  ),
+                  //
+                  //
+                  //
+                  SingleChildScrollView(
+                    child: SafeArea(
+                      child: Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: Column(children: [
+                          Container(
+                            height: 800,
+                            width: double.maxFinite,
+                            color: Colors.blue,
+                          ),
+                        ]),
+                      ),
+                    ),
+                  ),
+                  //
+                  //
+                  //
+                  SingleChildScrollView(
+                    child: SafeArea(
+                      child: Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: Column(children: [
+                          Container(
+                            height: 800,
+                            width: double.maxFinite,
+                            color: Colors.orange,
+                          ),
+                        ]),
+                      ),
+                    ),
+                  ),
+                  //
+                  //
+                  //
+                ]),
+          ),
+        ],
       ),
     );
   }

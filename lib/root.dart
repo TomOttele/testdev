@@ -56,7 +56,7 @@ class _RootWidgetState extends State<RootWidget> {
           Align(
             alignment: const Alignment(0, 1),
             child: Padding(
-              padding: const EdgeInsets.only(left: 45, right: 45, bottom: 0),
+              padding: const EdgeInsets.only(left: 57, right: 57, bottom: 5),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(20),
                 // child: ScrollToHideWidget(

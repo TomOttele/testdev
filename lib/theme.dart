@@ -5,7 +5,8 @@ class AppTheme {
 
 //light
   static const Color _lightPrimaryColor = Colors.white;
-  static const Color _lightPrimaryVariantColor = Color.fromRGBO(255, 152, 0, 1);
+  static const Color _lightPrimaryBottomSheetColor =
+      Color.fromARGB(255, 20, 20, 20);
   static const Color _lightOnPrimaryColor = Color.fromARGB(255, 95, 95, 95);
   static const Color _lightTextColorPrimary = Colors.black;
   static const Color _lightTextColorSecondary = Color.fromARGB(255, 61, 61, 61);
@@ -14,7 +15,8 @@ class AppTheme {
 
 //dark
   static const Color _darkPrimaryColor = Colors.black;
-  static const Color _darkPrimaryVariantColor = Colors.yellow;
+  static const Color _darkPrimaryBottomSheetColor =
+      Color.fromARGB(255, 20, 20, 20);
   static const Color _darkOnPrimaryColor = Color.fromARGB(255, 44, 44, 44);
   static const Color _darkTextColorPrimary = Colors.white;
   static const Color _darkTextColorSecondary =
@@ -26,31 +28,31 @@ class AppTheme {
 
   static const TextStyle _lightPageHeading = TextStyle(
       color: _lightTextColorPrimary,
-      fontFamily: "Roboto",
+      fontFamily: "Tenorite",
       fontSize: 30,
       fontWeight: FontWeight.bold);
 
   static const TextStyle _lightHeadingText = TextStyle(
       color: _lightTextColorPrimary,
       fontSize: 22,
-      fontFamily: "Roboto",
+      fontFamily: "Tenorite",
       fontWeight: FontWeight.bold);
 
   static const TextStyle _lightHeading2Text = TextStyle(
     color: _lightTextColorPrimary,
-    fontFamily: "Roboto",
+    fontFamily: "Tenorite",
     fontSize: 22,
   );
 
   static const TextStyle _lightBodyText = TextStyle(
     color: _lightTextColorPrimary,
-    fontFamily: "Roboto",
-    fontSize: 18,
+    fontFamily: "Tenorite",
+    fontSize: 16,
   );
 
   static const TextStyle _lightBodyText2 = TextStyle(
     color: _lightTextColorSecondary,
-    fontFamily: "Roboto",
+    fontFamily: "Tenorite",
     fontSize: 20,
   );
 
@@ -81,11 +83,11 @@ class AppTheme {
       _lightBodyText.copyWith(color: _darkTextColorSecondary);
 
   static final TextTheme _darkTextTheme = TextTheme(
-    headline1: _darkPageHeading,
-    headline2: _darkHeadingText,
-    headline3: _darkHeading2Text,
-    bodyText1: _darkBodyText,
-    bodyText2: _darkBodyText2,
+    displayLarge: _darkPageHeading,
+    displayMedium: _darkHeadingText,
+    displaySmall: _darkHeading2Text,
+    bodyLarge: _darkBodyText,
+    bodyMedium: _darkBodyText2,
   );
 
   // Scaffold light //
@@ -101,7 +103,7 @@ class AppTheme {
       colorScheme: const ColorScheme.light(
           primary: _lightPrimaryColor,
           onPrimary: _lightOnPrimaryColor,
-          primaryContainer: _lightPrimaryVariantColor),
+          primaryContainer: _lightPrimaryBottomSheetColor),
       textTheme: _lightTextTheme);
 
 //Scaffold dark//
@@ -115,7 +117,7 @@ class AppTheme {
       colorScheme: const ColorScheme.dark(
         primary: _darkPrimaryColor,
         onPrimary: _darkOnPrimaryColor,
-        primaryContainer: _darkPrimaryVariantColor,
+        primaryContainer: _darkPrimaryBottomSheetColor,
       ),
       textTheme: _darkTextTheme);
 }

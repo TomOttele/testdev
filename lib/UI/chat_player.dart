@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:testdev/UI/home_player.dart';
+import 'package:testdev/UI/widgets/elevatedbutton.dart';
+import 'package:testdev/UI/widgets/telephone_form.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -62,12 +64,19 @@ class ChatPage extends StatelessWidget {
           title: Text("Chats", style: Theme.of(context).textTheme.displayLarge),
         ),
         // ignore: unnecessary_new
-        body: new Center(
-          child: InkWell(
-              child: const Text('Open Browser'),
-              // ignore: deprecated_member_use
-              onTap: () => launch(
-                  'https://docs.flutter.io/flutter/services/UrlLauncher-class.html')),
+        body: Column(
+          children: [
+            Elevated_Button(
+              onPressed: null,
+              text: '156555555',
+            ),
+            InkWell(
+                child: const Text('Open Browser'),
+                // ignore: deprecated_member_use
+                onTap: () => launch(
+                    'https://docs.flutter.io/flutter/services/UrlLauncher-class.html')),
+            TelephoneNumber(labelText: 'labelText', maxLenght: 20)
+          ],
         ),
       ),
     );
