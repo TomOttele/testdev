@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'dart:io';
-import 'dart:async';
-import 'package:testdev/UI/settings/settings_player.dart';
+
+import 'package:testdev/UI/widgets/elevatedbutton.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key? key}) : super(key: key);
@@ -30,7 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
             maxRadius: 25,
             backgroundImage: image != null
                 ? FileImage(image!) as ImageProvider
-                : const AssetImage('assets/images/Eintracht_Trier.svg.png'),
+                : const AssetImage('assets/images/cristiano_ronaldo.webp'),
             child: InkWell(
               onTap: () {
                 Navigator.of(context).pushNamed("/SettingPage");

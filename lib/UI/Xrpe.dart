@@ -42,7 +42,8 @@ class _RPEPageState extends State<RPEPage> {
                           children: <Widget>[
                             ListTile(
                               title: Text('Choose event',
-                                  style: Theme.of(context).textTheme.headline1),
+                                  style:
+                                      Theme.of(context).textTheme.displayLarge),
                             ),
                             ListTile(
                               leading: const Icon(Icons.add),

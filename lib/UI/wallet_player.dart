@@ -1,22 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:testdev/UI/widgets/choicechip_data.dart';
 import 'package:testdev/UI/widgets/choicechip.dart';
+import 'package:testdev/UI/widgets/dropdown_button.dart';
+import 'package:testdev/UI/widgets/elevatedbutton.dart';
+import 'package:testdev/UI/widgets/number_form.dart';
+import 'package:testdev/UI/widgets/wallet_transaction.dart';
 import 'package:testdev/application/theme_Service.dart';
-import 'package:flutter/services.dart';
-import 'dart:io';
-import 'dart:async';
-import 'package:flag/flag_enum.dart';
-import 'package:flag/flag_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:testdev/UI/widgets/separator.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:testdev/UI/widgets/Xdata.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:testdev/UI/widgets/sortable_page.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:path/path.dart';
 import 'package:flutter_polygon/flutter_polygon.dart';
 import 'package:circular_profile_avatar/circular_profile_avatar.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:testdev/UI/widgets/text_form.dart';
+import 'package:flutter/services.dart';
 
 class WalletPage extends StatefulWidget {
   const WalletPage({Key? key}) : super(key: key);
@@ -25,213 +22,780 @@ class WalletPage extends StatefulWidget {
   State<WalletPage> createState() => _WalletPageState();
 }
 
-/*class ChoiceChips {
-  static final all = <ChoiceChipData>[
-    ChoiceChipData(
-      label: 'All',
-      isSelected: true,
-      selectedColor: Colors.blue,
-      textColor: Colors.white,
-    ),
-    ChoiceChipData(
-      label: 'Training',
-      isSelected: true,
-      selectedColor: Colors.blue,
-      textColor: Colors.white,
-    ),
-    ChoiceChipData(
-      label: 'Games',
-      isSelected: true,
-      selectedColor: Colors.blue,
-      textColor: Colors.white,
-    )
-  ];
-
-  static map(ChoiceChip Function(dynamic choiceChip) param0) {}
-}*/
+Future showToast(String message) async {
+  await Fluttertoast.cancel();
+  Fluttertoast.showToast(msg: message, fontSize: 18);
+}
 
 class _WalletPageState extends State<WalletPage> {
+  List<String> itemsPlayers = [
+    'Lionel Messi',
+    'Cristiano Ronaldo',
+    'Kylian Mbappe'
+  ];
+  String? selectedItem = 'Lionel Messi';
+  List<String> itemsInfractions = [
+    'Training Late',
+    'Game Late',
+    'Pissed in shower'
+  ];
+  List<String> itemsDate = ['21.08', '20.08', '19.08'];
+
+  late ScrollController controller;
   final double spacing = 8;
+  final isDialOpen = ValueNotifier(false);
 
   List<ChoiceChipData> choiceChips = ChoiceChips.all;
+
+  TableRow buildRow(List<String> cells) => TableRow(
+        children: cells.map((cell) {
+          return Padding(
+              padding: const EdgeInsets.only(top: 15),
+              child: Text(
+                  maxLines: 1,
+                  style: Theme.of(context).textTheme.bodyMedium,
+                  cell));
+        }).toList(),
+      );
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Consumer<ThemeService>(
       builder: (context, themeService, child) {
-        return Scaffold(
-          //
-          body: NestedScrollView(
-            headerSliverBuilder: (context, innerBoxIsScrolled) {
-              return <Widget>[
-                // AppBar
-                //
-                SliverAppBar(
-                  floating: true,
-                  snap: true,
-                  backgroundColor: Theme.of(context).colorScheme.onPrimary,
-                  elevation: 0,
-                  centerTitle: true,
-                  title: const Text(
-                    '25.807,64€',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      fontSize: 22,
-                    ),
-                  ),
-                ),
-                SliverToBoxAdapter(
-                  child: Column(
-                    children: <Widget>[
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.onPrimary,
-                          borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(15),
-                              bottomRight: Radius.circular(15)),
+        return DefaultTabController(
+          length: 5,
+          child: Scaffold(
+            //
+            // FloatingActionButton
+            //
+
+            floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+            floatingActionButton: Padding(
+              padding: const EdgeInsets.only(bottom: 55),
+              child: SpeedDial(
+                icon: Icons.add,
+                overlayColor: Colors.black,
+                overlayOpacity: 0.3,
+                spacing: 12,
+                elevation: 20,
+                spaceBetweenChildren: 15,
+                closeManually: false,
+                openCloseDial: isDialOpen,
+                children: [
+                  //
+                  // 1. Speeddial
+                  //
+                  SpeedDialChild(
+                    child: const Icon(Icons.create),
+                    label: 'Create infraction',
+                    labelStyle: Theme.of(context).textTheme.displaySmall,
+                    backgroundColor: Theme.of(context).colorScheme.onPrimary,
+                    onTap: () => showModalBottomSheet(
+                        backgroundColor:
+                            Theme.of(context).colorScheme.onPrimary,
+                        isScrollControlled: true,
+                        shape: const RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.vertical(top: Radius.circular(15)),
                         ),
-                        child: Stack(
-                          children: <Widget>[
-                            Column(
+                        context: context,
+                        builder: (context) {
+                          return Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 5.0),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
-                                      Align(
-                                        alignment: Alignment(-0.85, 0),
-                                        child: StackItem2(size: size * 0.9),
-                                      ),
-                                      Align(
-                                          alignment: Alignment(0, 0),
-                                          child: StackItem1(size: size)),
-                                      Align(
-                                          alignment: const Alignment(0.85, 0),
-                                          child: StackItem3(size: size * 0.9)),
-                                    ],
+                                //
+
+                                ListTile(
+                                  title: Text('Create new infraction',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .displayMedium),
+                                ),
+                                //
+                                const Separator(),
+                                //
+
+                                //
+
+                                const TextForm(
+                                    hintText: 'i.e. Pissed in shower',
+                                    labelText: 'Reason',
+                                    maxLenght: 20),
+                                const Separator(),
+                                //
+                                const NumberForm(
+                                    hintText: 'i.e. 5€',
+                                    labelText: '€',
+                                    maxLenght: 6),
+                                //
+                                const Separator(),
+
+                                Center(
+                                  child: Elevated_Button(
+                                    onPressed: () {},
+                                    text: 'Add',
                                   ),
                                 ),
-                                const SizedBox(
-                                  height: 10,
+
+                                SizedBox(height: size.height * 0.5),
+                              ],
+                            ),
+                          );
+                        }),
+                  ),
+
+                  //
+                  // 2. Speeddial
+                  //
+                  SpeedDialChild(
+                      child: const Icon(Icons.add),
+                      label: 'Add infraction',
+                      labelStyle: Theme.of(context).textTheme.displaySmall,
+                      backgroundColor: Theme.of(context).colorScheme.onPrimary,
+                      onTap: () => showModalBottomSheet(
+                            backgroundColor: Color.fromARGB(255, 20, 20, 20),
+                            isScrollControlled: true,
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(15)),
+                            ),
+                            context: context,
+                            builder: (context) {
+                              return Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    ListTile(
+                                      title: Text('Add new infraction',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .displayMedium),
+                                    ),
+
+                                    //
+                                    // Player picker
+                                    //
+                                    DropDownMenu(
+                                      items: [
+                                        'Lionel Messi',
+                                        'Cristiano Ronaldo',
+                                        'Kylian Mbappé',
+                                        'Sven Schmit'
+                                      ],
+                                      labelText: 'Choose a player',
+                                    ),
+                                    //
+                                    //
+                                    const Separator(),
+                                    //
+                                    //
+                                    DropDownMenu(
+                                      items: [
+                                        'Pissed in shower',
+                                        'Training late',
+                                        'Game late',
+                                        'Wrong Equipment'
+                                      ],
+                                      labelText: 'Infraction',
+                                    ),
+
+                                    //
+                                    //
+                                    const Separator(),
+                                    //
+                                    //
+                                    DropDownMenu(
+                                      items: ['18.09', '19.09'],
+                                      labelText: 'Date',
+                                    ),
+                                    const Separator(),
+                                    //
+                                    //
+                                    Center(
+                                      child: Elevated_Button(
+                                        onPressed: () {},
+                                        text: 'Add',
+                                      ),
+                                    ),
+
+                                    const Separator(),
+                                  ],
+                                ),
+                              );
+                            },
+                          )),
+                ],
+              ),
+            ),
+
+            //
+            // AppBar
+            //
+
+            appBar: AppBar(
+              backgroundColor: Theme.of(context).colorScheme.onPrimary,
+              elevation: 0,
+              centerTitle: true,
+              title: Text('25.907,64€',
+                  style: Theme.of(context).textTheme.displayMedium),
+            ),
+            body: Column(
+              children: <Widget>[
+                Container(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.onPrimary,
+                    borderRadius: const BorderRadius.only(
+                        bottomLeft: Radius.circular(15),
+                        bottomRight: Radius.circular(15)),
+                  ),
+                  child: Stack(
+                    children: <Widget>[
+                      Column(
+                        children: <Widget>[
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 5.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Align(
+                                  child: StackItem2(size: size),
+                                ),
+                                Align(
+                                  child: StackItem1(size: size),
+                                ),
+                                Align(
+                                  child: StackItem3(size: size),
                                 ),
                               ],
                             ),
-                          ],
-                        ),
+                          ),
+                          SizedBox(height: size.height * 0.012)
+                        ],
                       ),
                     ],
                   ),
                 ),
-              ];
-            },
-            body: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: Column(
-                  children: <Widget>[
-                    Container(
-                      child: Stack(
-                        children: <Widget>[
-                          SafeArea(
+                //
+                // TabBar
+                //
+
+                TabBar(
+                  labelStyle: Theme.of(context).textTheme.bodyMedium,
+                  isScrollable: true,
+                  physics: BouncingScrollPhysics(
+                      parent: AlwaysScrollableScrollPhysics()),
+                  indicatorColor: Colors.transparent,
+                  tabs: const [
+                    Tab(
+                      text: 'All',
+                    ),
+                    Tab(
+                      text: 'Transactions',
+                    ),
+                    Tab(
+                      text: 'Me',
+                    ),
+                    Tab(
+                      text: 'Leaderboard',
+                    ),
+                    Tab(
+                      text: 'Infractions',
+                    ),
+                  ],
+                ),
+                //
+                //
+                //
+                Expanded(
+                  child: TabBarView(
+                    children: [
+                      //
+                      //1. Tabbar
+                      //
+                      SingleChildScrollView(
+                        child: SafeArea(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
                             child: Column(
                               children: [
-                                buildChoiceChips(),
-                                Column(
-                                  children: [
-                                    const Separator(),
-                                    Container(
-                                      height: size.height * 0.25,
-                                      width: size.width * 1,
-                                      decoration: BoxDecoration(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .onPrimary,
-                                          borderRadius:
-                                              BorderRadius.circular(15)),
-                                    ),
-                                    const Separator(),
-                                    Container(
-                                      height: size.height * 0.25,
-                                      width: size.width * 1,
-                                      decoration: BoxDecoration(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .onPrimary,
-                                          borderRadius:
-                                              BorderRadius.circular(15)),
-                                    ),
-                                    const Separator(),
-                                    Container(
-                                      height: size.height * 0.25,
-                                      width: size.width * 1,
-                                      decoration: BoxDecoration(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .onPrimary,
-                                          borderRadius:
-                                              BorderRadius.circular(15)),
+                                Stack(
+                                  children: <Widget>[
+                                    SafeArea(
+                                      child: Column(
+                                        children: [
+                                          //
+                                          //
+                                          SizedBox(
+                                            height: size.height * 0.01,
+                                          ),
+                                          //
+                                          //
+                                          //
+
+                                          Column(
+                                            children: [
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    'Transactions',
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .displaySmall,
+                                                  )
+                                                ],
+                                              ),
+                                              Center(
+                                                child: Table(
+                                                  columnWidths: const {
+                                                    0: FractionColumnWidth(
+                                                        0.05),
+                                                    1: FractionColumnWidth(0.3),
+                                                    2: FractionColumnWidth(
+                                                        0.35),
+                                                    3: FractionColumnWidth(
+                                                        0.15), //2. Column
+                                                    4: FractionColumnWidth(
+                                                        0.15), //3. Column
+                                                  },
+                                                  children: [
+                                                    buildRow([
+                                                      'Y',
+                                                      'Cristiano Ronaldo',
+                                                      'Training late',
+                                                      '10.05',
+                                                      '315€'
+                                                    ]),
+                                                    buildRow([
+                                                      'X',
+                                                      'Lionel Messi',
+                                                      'Training late',
+                                                      '10.05',
+                                                      '315€'
+                                                    ]),
+                                                    buildRow([
+                                                      'X',
+                                                      'Lionel Messi',
+                                                      'Training late',
+                                                      '10.05',
+                                                      '315€'
+                                                    ])
+                                                  ],
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                  height: size.height * 0.07)
+                                            ],
+                                          ),
+                                          //
+                                          //
+                                          //
+                                          Column(
+                                            children: [
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    'Me',
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .displaySmall,
+                                                  )
+                                                ],
+                                              ),
+                                              Center(
+                                                child: Table(
+                                                  columnWidths: const {
+                                                    0: FractionColumnWidth(
+                                                        0.08),
+                                                    1: FractionColumnWidth(
+                                                        0.56),
+                                                    2: FractionColumnWidth(
+                                                        0.20), //2. Column
+                                                    3: FractionColumnWidth(
+                                                        0.16), //3. Column
+                                                  },
+                                                  children: [
+                                                    buildRow([
+                                                      'Y',
+                                                      'Training late',
+                                                      '10.05',
+                                                      '315€'
+                                                    ]),
+                                                    buildRow([
+                                                      'X',
+                                                      'Training late',
+                                                      '10.05',
+                                                      '315€'
+                                                    ]),
+                                                    buildRow([
+                                                      'X',
+                                                      'Training late',
+                                                      '10.05',
+                                                      '315€'
+                                                    ])
+                                                  ],
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                  height: size.height * 0.07),
+                                              Column(
+                                                children: [
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    children: [
+                                                      Text(
+                                                        'Leaderboard',
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .displaySmall,
+                                                      )
+                                                    ],
+                                                  ),
+                                                  Center(
+                                                    child: Table(
+                                                      columnWidths: const {
+                                                        0: FractionColumnWidth(
+                                                            0.07),
+                                                        1: FractionColumnWidth(
+                                                            0.60),
+                                                        2: FractionColumnWidth(
+                                                            0.17),
+                                                        3: FractionColumnWidth(
+                                                            0.18), //2. Column
+                                                      },
+                                                      children: [
+                                                        buildRow([
+                                                          '1.',
+                                                          'Cristiano Ronaldo',
+                                                          '17',
+                                                          '1.315€'
+                                                        ]),
+                                                        buildRow([
+                                                          '2.',
+                                                          'Lionel Messi',
+                                                          '15',
+                                                          '315€'
+                                                        ]),
+                                                        buildRow([
+                                                          '3.',
+                                                          'Sven Schmit',
+                                                          '10',
+                                                          '315€'
+                                                        ])
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                      height:
+                                                          size.height * 0.07)
+                                                ],
+                                              )
+                                            ],
+                                          ),
+
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                '  Leaderboard',
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .displaySmall,
+                                              )
+                                            ],
+                                          ),
+                                          SizedBox(height: 10),
+                                          Container(
+                                            height: size.height * 0.27,
+                                            width: double.maxFinite,
+                                            decoration: BoxDecoration(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .primaryContainer,
+                                              borderRadius:
+                                                  BorderRadius.circular(15),
+                                            ),
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: <Widget>[
+                                                Expanded(
+                                                    child: WalletTransaction())
+                                              ],
+                                            ),
+                                          ),
+
+                                          //
+                                          //
+                                          const Separator(),
+                                          const Separator(),
+
+                                          //
+                                          //
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                '  Me',
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .displaySmall,
+                                              )
+                                            ],
+                                          ),
+                                          Container(
+                                            height: size.height * 0.27,
+                                            width: double.maxFinite,
+                                            decoration: BoxDecoration(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onPrimary,
+                                              borderRadius:
+                                                  BorderRadius.circular(15),
+                                            ),
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: const <Widget>[
+                                                Expanded(
+                                                    child: WalletTransaction())
+                                              ],
+                                            ),
+                                          ),
+
+                                          //
+                                          //
+                                          SizedBox(height: size.height * 0.15),
+                                        ],
+                                      ),
                                     ),
                                   ],
                                 ),
                               ],
                             ),
                           ),
-                        ],
+                        ),
                       ),
-                    ),
-                  ],
+
+                      //
+                      // 2. Tabbar
+                      //
+
+                      SingleChildScrollView(
+                        child: SafeArea(
+                          child: Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Column(children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Transactions',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .displaySmall,
+                                  )
+                                ],
+                              ),
+                              Center(
+                                child: Table(
+                                  columnWidths: const {
+                                    0: FractionColumnWidth(0.05),
+                                    1: FractionColumnWidth(0.3),
+                                    2: FractionColumnWidth(0.35),
+                                    3: FractionColumnWidth(0.15), //2. Column
+                                    4: FractionColumnWidth(0.15), //3. Column
+                                  },
+                                  children: [
+                                    buildRow([
+                                      'Y',
+                                      'Cristiano Ronaldo',
+                                      'Training late',
+                                      '10.05',
+                                      '315€'
+                                    ]),
+                                    buildRow([
+                                      'X',
+                                      'Lionel Messi',
+                                      'Training late',
+                                      '10.05',
+                                      '315€'
+                                    ]),
+                                    buildRow([
+                                      'X',
+                                      'Lionel Messi',
+                                      'Training late',
+                                      '10.05',
+                                      '315€'
+                                    ])
+                                  ],
+                                ),
+                              ),
+                              SizedBox(height: size.height * 0.2)
+                            ]),
+                          ),
+                        ),
+                      ),
+
+                      //
+                      //3. Tabbar
+                      //
+
+                      SingleChildScrollView(
+                        child: SafeArea(
+                          child: Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Column(children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Me',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .displaySmall,
+                                  )
+                                ],
+                              ),
+                              Center(
+                                child: Table(
+                                  columnWidths: const {
+                                    0: FractionColumnWidth(0.08),
+                                    1: FractionColumnWidth(0.56),
+                                    2: FractionColumnWidth(0.20), //2. Column
+                                    3: FractionColumnWidth(0.16), //3. Column
+                                  },
+                                  children: [
+                                    buildRow([
+                                      'Y',
+                                      'Training late',
+                                      '10.05',
+                                      '315€'
+                                    ]),
+                                    buildRow([
+                                      'X',
+                                      'Training late',
+                                      '10.05',
+                                      '315€'
+                                    ]),
+                                    buildRow(
+                                        ['X', 'Training late', '10.05', '315€'])
+                                  ],
+                                ),
+                              ),
+                              SizedBox(height: size.height * 0.2)
+                            ]),
+                          ),
+                        ),
+                      ),
+
+                      //
+                      // 4.Tabbar
+                      //
+
+                      SingleChildScrollView(
+                        child: SafeArea(
+                          child: Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Column(children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Leaderboard',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .displaySmall,
+                                  )
+                                ],
+                              ),
+                              Center(
+                                child: Table(
+                                  columnWidths: const {
+                                    0: FractionColumnWidth(0.07),
+                                    1: FractionColumnWidth(0.60),
+                                    2: FractionColumnWidth(0.17),
+                                    3: FractionColumnWidth(0.18), //2. Column
+                                  },
+                                  children: [
+                                    buildRow([
+                                      '1.',
+                                      'Cristiano Ronaldo',
+                                      '17',
+                                      '1.315€'
+                                    ]),
+                                    buildRow(
+                                        ['2.', 'Lionel Messi', '15', '315€']),
+                                    buildRow(
+                                        ['3.', 'Sven Schmit', '10', '315€'])
+                                  ],
+                                ),
+                              ),
+                              SizedBox(height: size.height * 0.2)
+                            ]),
+                          ),
+                        ),
+                      ),
+                      //
+                      // %.TabBar
+                      //
+                      SingleChildScrollView(
+                        child: SafeArea(
+                          child: Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Column(children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Infractions',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .displaySmall,
+                                  )
+                                ],
+                              ),
+                              Center(
+                                child: Table(
+                                  columnWidths: const {
+                                    0: FractionColumnWidth(0.80),
+                                    1: FractionColumnWidth(0.2),
+                                  },
+                                  children: [
+                                    buildRow(['Training late', '315€']),
+                                    buildRow(['Pissed in shower', '315€']),
+                                    buildRow(['Game late', '315€'])
+                                  ],
+                                ),
+                              ),
+                              SizedBox(height: size.height * 0.2)
+                            ]),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
+              ],
             ),
           ),
         );
       },
     );
   }
-
-  Widget buildChoiceChips() => SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: choiceChips
-              .map(
-                (choiceChip) => Padding(
-                  padding: const EdgeInsets.all(2),
-                  child: ChoiceChip(
-                    label: Text(choiceChip.label),
-                    labelStyle: TextStyle(color: Colors.white),
-                    onSelected: (isSelected) => setState(() {
-                      choiceChips = choiceChips.map((otherChip) {
-                        final newChip = otherChip.copy(
-                          label: choiceChip.label,
-                          textColor: choiceChip.textColor,
-                          selectedColor: choiceChip.selectedColor,
-                          isSelected: false,
-                        );
-
-                        return choiceChip == newChip
-                            ? newChip.copy(
-                                isSelected: isSelected,
-                                label: choiceChip.label,
-                                textColor: choiceChip.textColor,
-                                selectedColor: choiceChip.selectedColor)
-                            : newChip;
-                      }).toList();
-                    }),
-                    selected: choiceChip.isSelected,
-                    selectedColor: Colors.grey,
-                    backgroundColor: Colors.transparent,
-                  ),
-                ),
-              )
-              .toList(),
-        ),
-      );
 }
 
 //
@@ -249,44 +813,59 @@ class StackItem1 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: size.width * 0.25,
-      child: Stack(
-        children: <Widget>[
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              ClipPolygon(
-                sides: 6,
-                borderRadius: 8,
-                child: Container(
-                  color: Colors.yellow,
-                  padding: const EdgeInsets.all(3.0),
-                  child: ClipPolygon(
-                    sides: 6,
-                    borderRadius: 8,
-                    child: CircularProfileAvatar(
-                      radius: 20,
-                      'https://i.goalzz.com/?i=ashraf-zamrani%2Flionelmessi.gif',
-                      borderWidth: 1,
+    return SizedBox(
+        width: size.width * 0.3,
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: SizedBox(
+                width: size.width * 0.2,
+                child: Stack(
+                  children: <Widget>[
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        ClipPolygon(
+                          sides: 6,
+                          borderRadius: 8,
+                          child: Container(
+                            color: Colors.yellow,
+                            padding: const EdgeInsets.all(3.0),
+                            child: ClipPolygon(
+                              sides: 6,
+                              borderRadius: 8,
+                              child: CircularProfileAvatar(
+                                radius: 20,
+                                'https://i.goalzz.com/?i=ashraf-zamrani%2Flionelmessi.gif',
+                                borderWidth: 1,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
+                  ],
                 ),
               ),
-              Text("Lionel Messi",
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      fontSize: 17)),
-              Text(
-                "3.815€",
-                style: TextStyle(color: Colors.grey, fontSize: 14),
-              ),
-            ],
-          )
-        ],
-      ),
-    );
+            ),
+            Text("Lionel Messi ",
+                textAlign: TextAlign.center,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.bodyLarge),
+            SizedBox(
+              height: size.height * 0.007,
+            ),
+            Text(
+              "3.815€",
+              textAlign: TextAlign.center,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+          ],
+        ));
   }
 }
 
@@ -306,44 +885,57 @@ class StackItem2 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: size.width * 0.25,
-      child: Stack(
-        children: <Widget>[
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              ClipPolygon(
-                sides: 6,
-                borderRadius: 8,
-                child: Container(
-                  color: Color.fromARGB(255, 190, 190, 190),
-                  padding: const EdgeInsets.all(3.0),
-                  child: ClipPolygon(
-                    sides: 6,
-                    borderRadius: 8,
-                    child: CircularProfileAvatar(
-                      radius: 20,
-                      'https://i.goalzz.com/?i=ashraf-zamrani%2Flionelmessi.gif',
-                      borderWidth: 1,
+    return SizedBox(
+        width: size.width * 0.3,
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: SizedBox(
+                width: size.width * 0.2,
+                child: Stack(
+                  children: <Widget>[
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        ClipPolygon(
+                          sides: 6,
+                          borderRadius: 8,
+                          child: Container(
+                            color: Colors.grey,
+                            padding: const EdgeInsets.all(3.0),
+                            child: ClipPolygon(
+                              sides: 6,
+                              borderRadius: 8,
+                              child: CircularProfileAvatar(
+                                radius: 20,
+                                'https://i.goalzz.com/?i=ashraf-zamrani%2Flionelmessi.gif',
+                                borderWidth: 1,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
+                  ],
                 ),
               ),
-              Text("Lionel Messi",
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      fontSize: 16)),
-              Text(
-                "3.815€",
-                style: TextStyle(color: Colors.grey, fontSize: 14),
-              ),
-            ],
-          )
-        ],
-      ),
-    );
+            ),
+            Text("Lionel Messi ",
+                textAlign: TextAlign.center,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.bodyLarge),
+            SizedBox(height: size.height * 0.007),
+            Text(
+              "3.815€",
+              textAlign: TextAlign.center,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+          ],
+        ));
   }
 }
 
@@ -364,43 +956,56 @@ class StackItem3 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: size.width * 0.25,
-      child: Stack(
-        children: <Widget>[
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              ClipPolygon(
-                sides: 6,
-                borderRadius: 8,
-                child: Container(
-                  color: Color.fromARGB(255, 105, 28, 0),
-                  padding: const EdgeInsets.all(3.0),
-                  child: ClipPolygon(
-                    sides: 6,
-                    borderRadius: 8,
-                    child: CircularProfileAvatar(
-                      radius: 20,
-                      'https://i.goalzz.com/?i=ashraf-zamrani%2Flionelmessi.gif',
-                      borderWidth: 1,
+    return SizedBox(
+        width: size.width * 0.3,
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: SizedBox(
+                width: size.width * 0.2,
+                child: Stack(
+                  children: <Widget>[
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        ClipPolygon(
+                          sides: 6,
+                          borderRadius: 8,
+                          child: Container(
+                            color: Color.fromARGB(255, 128, 44, 6),
+                            padding: const EdgeInsets.all(3.0),
+                            child: ClipPolygon(
+                              sides: 6,
+                              borderRadius: 8,
+                              child: CircularProfileAvatar(
+                                radius: 20,
+                                'https://i.goalzz.com/?i=ashraf-zamrani%2Flionelmessi.gif',
+                                borderWidth: 1,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
+                  ],
                 ),
               ),
-              Text("Lionel Messi",
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      fontSize: 16)),
-              Text(
-                "3.815€",
-                style: TextStyle(color: Colors.grey, fontSize: 14),
-              ),
-            ],
-          )
-        ],
-      ),
-    );
+            ),
+            Text("Lionel Messi ",
+                textAlign: TextAlign.center,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.bodyLarge),
+            SizedBox(height: size.height * 0.007),
+            Text(
+              "3.815€",
+              textAlign: TextAlign.center,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+          ],
+        ));
   }
 }

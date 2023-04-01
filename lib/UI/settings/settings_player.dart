@@ -5,7 +5,12 @@ import 'package:flag/flag_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:testdev/UI/widgets/birthday_form.dart';
+import 'package:testdev/UI/widgets/choicechips_ms.dart';
+import 'package:testdev/UI/widgets/dropdown_button.dart';
+import 'package:testdev/UI/widgets/number_form.dart';
 import 'package:testdev/UI/widgets/separator.dart';
+import 'package:testdev/UI/widgets/text_form.dart';
 import 'package:testdev/application/theme_Service.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:testdev/UI/widgets/Xdata.dart';
@@ -14,9 +19,13 @@ import 'package:image_picker/image_picker.dart';
 import 'package:testdev/UI/widgets/sortable_page.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
+import 'package:toggle_switch/toggle_switch.dart';
+
+import '../widgets/telephone_form.dart';
+import '../widgets/toggle_button.dart';
 
 class SettingPage extends StatefulWidget {
-  SettingPage({Key? key}) : super(key: key);
+  const SettingPage({Key? key}) : super(key: key);
 
   @override
   State<SettingPage> createState() => _SettingPageState();
@@ -59,6 +68,7 @@ class _SettingPageState extends State<SettingPage> {
 
   Future _showBottomSheet(context) {
     return showModalBottomSheet(
+        backgroundColor: Theme.of(context).colorScheme.onPrimary,
         isScrollControlled: true,
         context: context,
         builder: (context) {
@@ -100,6 +110,7 @@ class _SettingPageState extends State<SettingPage> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Consumer<ThemeService>(builder: (context, themeService, child) {
       return Scaffold(
         //
@@ -119,6 +130,8 @@ class _SettingPageState extends State<SettingPage> {
                     child: const Text('Account selection'),
                     onTap: () {
                       showModalBottomSheet(
+                          backgroundColor:
+                              Theme.of(context).colorScheme.onPrimary,
                           isScrollControlled: true,
                           shape: const RoundedRectangleBorder(
                             borderRadius:
@@ -197,16 +210,23 @@ class _SettingPageState extends State<SettingPage> {
               //
 
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                Text('Tom Ottelé',
-                    style: Theme.of(context).textTheme.headline1),
+                Expanded(
+                  child: Text('Cristiano Ronaldo da Silva Da Cruz ',
+                      textAlign: TextAlign.start,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.headline1),
+                ),
                 CircleAvatar(
                   maxRadius: 30,
                   backgroundImage: image != null
                       ? FileImage(image!) as ImageProvider
                       : const AssetImage(
-                          'https://i.goalzz.com/?i=ashraf-zamrani%2Flionelmessi.gif'),
+                          'assets/images/cristiano_ronaldo.webp'),
                   child: InkWell(onTap: () {
                     showModalBottomSheet(
+                        backgroundColor:
+                            Theme.of(context).colorScheme.onPrimary,
                         isScrollControlled: true,
                         shape: const RoundedRectangleBorder(
                             borderRadius: BorderRadius.vertical(
@@ -276,56 +296,103 @@ class _SettingPageState extends State<SettingPage> {
               // 2. ListTile (Personal information)
               //
               ListTile(
-                  tileColor: Theme.of(context).colorScheme.onPrimary,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15)),
-                  leading: const Icon(
-                    Icons.account_circle,
-                    color: Color.fromARGB(255, 14, 193, 238),
-                    size: 30,
-                  ),
-                  title: Text('Personal information',
-                      style: Theme.of(context).textTheme.bodyText1),
-                  onTap: () {
-                    showModalBottomSheet(
-                        isScrollControlled: true,
-                        context: context,
-                        builder: (context) {
-                          return Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              ListTile(
-                                leading: const Icon(Icons.photo),
-                                title: const Text('Photo'),
-                                onTap: () {
-                                  Navigator.pop(context);
-                                },
-                              ),
-                              ListTile(
-                                leading: const Icon(Icons.music_note),
-                                title: const Text('Music'),
-                                onTap: () {
-                                  Navigator.pop(context);
-                                },
-                              ),
-                              ListTile(
-                                leading: const Icon(Icons.videocam),
-                                title: const Text('Video'),
-                                onTap: () {
-                                  Navigator.pop(context);
-                                },
-                              ),
-                              ListTile(
-                                leading: const Icon(Icons.share),
-                                title: const Text('Share'),
-                                onTap: () {
-                                  Navigator.pop(context);
-                                },
-                              ),
-                            ],
-                          );
-                        });
-                  }),
+                tileColor: Theme.of(context).colorScheme.onPrimary,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15)),
+                leading: const Icon(
+                  Icons.account_circle,
+                  color: Color.fromARGB(255, 14, 193, 238),
+                  size: 30,
+                ),
+                title: Text('Personal information',
+                    style: Theme.of(context).textTheme.bodyLarge),
+                onTap: () {
+                  showModalBottomSheet(
+                    backgroundColor:
+                        Theme.of(context).colorScheme.primaryContainer,
+                    isScrollControlled: true,
+                    shape: const RoundedRectangleBorder(
+                      borderRadius:
+                          BorderRadius.vertical(top: Radius.circular(15)),
+                    ),
+                    context: context,
+                    builder: (context) {
+                      return Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: ListView(
+                          children: <Widget>[
+                            ListTile(
+                              title: Text('Personal information',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .displayMedium),
+                            ),
+                            const TextForm(labelText: 'Name', maxLenght: 30),
+                            const Separator(),
+                            const BirthdayInputWidget(),
+                            const Separator(),
+                            const TextForm(labelText: 'Address', maxLenght: 50),
+                            const Separator(),
+                            const NumberForm(
+                                labelText: 'Telephone', maxLenght: 9),
+                            const Separator(),
+                            const TelephoneNumber(
+                                labelText: 'Telephone', maxLenght: 20),
+                            const Separator(),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                NumberForm(
+                                    width: size.width * 0.4,
+                                    labelText: 'Height',
+                                    maxLenght: 3,
+                                    hintText: 'cm'),
+                                NumberForm(
+                                    width: size.width * 0.4,
+                                    labelText: 'Weight',
+                                    maxLenght: 3,
+                                    hintText: 'kg'),
+                              ],
+                            ),
+                            const Separator(),
+                            const TextForm(
+                                labelText: 'Nationality', maxLenght: 20),
+                            const Separator(),
+                            Text(
+                              'Preferred foot',
+                              style: Theme.of(context).textTheme.bodyMedium,
+                            ),
+                            ToggleButton(),
+                            const Separator(),
+                            NumberForm(
+                              width: size.width * 0.4,
+                              labelText: 'Shirt number',
+                              maxLenght: 3,
+                            ),
+                            const Separator(),
+                            DropDownMenu(items: const [
+                              'GK',
+                              'RB',
+                              'CB',
+                              'LB',
+                              'CDM',
+                              'CM',
+                              'COM',
+                              'LW',
+                              'RW',
+                              'ST'
+                            ], labelText: 'Position'),
+                            const Separator(),
+                            ChoiceChipsMS(),
+                            const Separator(),
+                          ],
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
               //
               // SizedBox
               //
@@ -342,6 +409,7 @@ class _SettingPageState extends State<SettingPage> {
                       style: Theme.of(context).textTheme.bodyText1),
                   onTap: () {
                     showModalBottomSheet(
+                      backgroundColor: Theme.of(context).colorScheme.onPrimary,
                       isScrollControlled: true,
                       shape: const RoundedRectangleBorder(
                           borderRadius:
@@ -406,6 +474,7 @@ class _SettingPageState extends State<SettingPage> {
                       style: Theme.of(context).textTheme.bodyText1),
                   onTap: () {
                     showModalBottomSheet(
+                      backgroundColor: Theme.of(context).colorScheme.onPrimary,
                       isScrollControlled: true,
                       shape: const RoundedRectangleBorder(
                           borderRadius:
@@ -475,6 +544,7 @@ class _SettingPageState extends State<SettingPage> {
                 ),
                 onTap: () {
                   showModalBottomSheet(
+                    backgroundColor: Theme.of(context).colorScheme.onPrimary,
                     isScrollControlled: true,
                     shape: const RoundedRectangleBorder(
                         borderRadius:
@@ -534,6 +604,8 @@ class _SettingPageState extends State<SettingPage> {
                       style: Theme.of(context).textTheme.bodyText1),
                   onTap: () {
                     showModalBottomSheet(
+                        backgroundColor:
+                            Theme.of(context).colorScheme.onPrimary,
                         isScrollControlled: true,
                         shape: const RoundedRectangleBorder(
                             borderRadius: BorderRadius.vertical(
@@ -683,6 +755,7 @@ class _SettingPageState extends State<SettingPage> {
                     style: Theme.of(context).textTheme.bodyText1),
                 onTap: () {
                   showModalBottomSheet(
+                    backgroundColor: Theme.of(context).colorScheme.onPrimary,
                     isScrollControlled: true,
                     shape: const RoundedRectangleBorder(
                         borderRadius:
@@ -771,6 +844,7 @@ class _SettingPageState extends State<SettingPage> {
                       style: Theme.of(context).textTheme.bodyText1),
                   onTap: () {
                     showModalBottomSheet(
+                      backgroundColor: Theme.of(context).colorScheme.onPrimary,
                       isScrollControlled: true,
                       shape: const RoundedRectangleBorder(
                           borderRadius:
@@ -856,6 +930,8 @@ class _SettingPageState extends State<SettingPage> {
                       style: Theme.of(context).textTheme.bodyText1),
                   onTap: () {
                     showModalBottomSheet(
+                        backgroundColor:
+                            Theme.of(context).colorScheme.onPrimary,
                         isScrollControlled: true,
                         shape: const RoundedRectangleBorder(
                             borderRadius: BorderRadius.vertical(
@@ -991,6 +1067,8 @@ class _SettingPageState extends State<SettingPage> {
                       style: Theme.of(context).textTheme.bodyText1),
                   onTap: () {
                     showModalBottomSheet(
+                        backgroundColor:
+                            Theme.of(context).colorScheme.onPrimary,
                         isScrollControlled: true,
                         shape: const RoundedRectangleBorder(
                             borderRadius: BorderRadius.vertical(
@@ -1037,7 +1115,9 @@ class _SettingPageState extends State<SettingPage> {
                   leading: const Icon(Icons.logout, color: Colors.red),
                   onTap: () {
                     showModalBottomSheet(
-                        isScrollControlled: true,
+                        backgroundColor:
+                            Theme.of(context).colorScheme.onPrimary,
+                        isScrollControlled: false,
                         shape: const RoundedRectangleBorder(
                             borderRadius: BorderRadius.vertical(
                                 top: Radius.circular(15))),
@@ -1054,10 +1134,7 @@ class _SettingPageState extends State<SettingPage> {
                                           .textTheme
                                           .headline1),
                                 ),
-                                Container(
-                                    constraints:
-                                        BoxConstraints.tightForFinite(),
-                                    child: SortablePage()),
+                                Expanded(child: SortablePage()),
                               ],
                             ),
                           );
