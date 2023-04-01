@@ -20,26 +20,32 @@ class NumberForm extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     return Column(
       children: [
+        /*
         Container(
           height: size.height * 0.093,
           width: width ?? size.width * 1,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(80),
           ),
-          child: TextFormField(
-            keyboardType: TextInputType.number,
-            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-            maxLength: maxLenght,
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              floatingLabelBehavior: FloatingLabelBehavior.always,
-              hintText: hintText,
-              filled: true,
-              fillColor: Theme.of(context).colorScheme.onPrimary,
-              labelText: labelText,
-              counterText: '',
-              labelStyle: const TextStyle(
-                  color: Colors.white, fontWeight: FontWeight.bold),
+          child: */
+        TextFormField(
+          keyboardType: TextInputType.number,
+          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+          maxLength: maxLenght,
+          decoration: InputDecoration(
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(width: 0, style: BorderStyle.none),
+            ),
+            floatingLabelBehavior: FloatingLabelBehavior.always,
+            hintText: hintText,
+            filled: true,
+            fillColor: Theme.of(context).colorScheme.onPrimary,
+            labelText: labelText,
+            counterText: '',
+            labelStyle: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
             ),
           ),
         ),

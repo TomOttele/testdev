@@ -386,6 +386,7 @@ class _SettingPageState extends State<SettingPage> {
                             const Separator(),
                             ChoiceChipsMS(),
                             const Separator(),
+                            NumberForm(labelText: 'xxx', maxLenght: 12)
                           ],
                         ),
                       );
