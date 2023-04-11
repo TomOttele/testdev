@@ -10,8 +10,6 @@ class RPEPage extends StatefulWidget {
 }
 
 class _RPEPageState extends State<RPEPage> {
-  bool _isSelected = false;
-
   @override
   Widget build(BuildContext context) {
     return Consumer<ThemeService>(builder: (context, themeService, child) {
@@ -45,32 +43,10 @@ class _RPEPageState extends State<RPEPage> {
                                   style:
                                       Theme.of(context).textTheme.displayLarge),
                             ),
-                            ListTile(
-                              leading: const Icon(Icons.add),
-                              title: const Text('Add event'),
-                              onTap: () {
-                                Navigator.pop(context);
-                              },
-                            ),
-                            ListTile(
-                              leading: const Icon(Icons.person),
-                              title: const Text('11.10.2022 - Training'),
-                              onTap: () {
-                                Navigator.pop(context);
-                              },
-                            ),
-                            ListTile(
-                              leading: const Icon(Icons.person),
-                              title: const Text('10.10.2022 - Game'),
-                              onTap: () {
-                                Navigator.pop(context);
-                              },
-                            ),
                           ],
                         );
                       });
                 },
-                child: const Text('Choose event'),
               ),
             )
           ];

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class Elevated_Button extends StatelessWidget {
+class ElevatedButtom extends StatelessWidget {
   final String text;
   final dynamic onPressed;
 
-  const Elevated_Button({Key? key, required this.text, required this.onPressed})
+  const ElevatedButtom({Key? key, required this.text, required this.onPressed})
       : super(key: key);
 
   @override

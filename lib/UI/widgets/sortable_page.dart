@@ -1,4 +1,3 @@
-import 'package:testdev/UI/widgets/scrollable_widget.dart';
 import 'package:testdev/data/usersT.dart';
 import 'package:testdev/data/userT.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +30,7 @@ class _SortablePageState extends State<SortablePage> {
     final columns = ['', '', '', ''];
 
     return DataTable(
-      dataTextStyle: Theme.of(context).textTheme.bodyText2,
+      dataTextStyle: Theme.of(context).textTheme.bodyMedium,
       headingRowHeight: 0,
       showBottomBorder: false,
       dividerThickness: 0,
@@ -66,7 +65,7 @@ class _SortablePageState extends State<SortablePage> {
 
   List<DataCell> getCells(List<dynamic> cells) => cells
       .map((data) => DataCell(
-            Container(
+            SizedBox(
               width: 50,
               child: Text(
                 '$data',

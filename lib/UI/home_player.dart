@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:testdev/UI/home_player1.dart';
-import 'package:testdev/UI/Xrpe.dart';
+import 'package:testdev/UI/rpe.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -18,7 +18,7 @@ class _HomePageState extends State<HomePage> {
         body: PageView(
             controller: _pageController,
             scrollDirection: Axis.horizontal,
-            children: [
+            children: const [
           RPEPage(),
           HomeScreen(),
         ]));

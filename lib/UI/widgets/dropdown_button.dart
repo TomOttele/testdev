@@ -20,7 +20,7 @@ class _DropDownMenuState extends State<DropDownMenu> {
     final size = MediaQuery.of(context).size;
     return Container(
       height: size.height * 0.073,
-      width: widget.width ?? size.width * 0.7,
+      width: widget.width ?? size.width * 1,
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.onPrimary,
         borderRadius: BorderRadius.circular(12),

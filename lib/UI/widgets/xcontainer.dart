@@ -20,7 +20,7 @@ class ContainerTest extends StatelessWidget {
                 const Icon(Icons.account_circle),
                 Text(
                   'Tom Ottelé',
-                  style: Theme.of(context).textTheme.bodyText1,
+                  style: Theme.of(context).textTheme.bodyLarge,
                 ),
               ],
             )),

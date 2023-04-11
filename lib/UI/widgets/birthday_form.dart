@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:testdev/UI/widgets/separator.dart';
 
 class BirthdayInputWidget extends StatefulWidget {
   const BirthdayInputWidget({Key? key}) : super(key: key);
@@ -12,16 +11,28 @@ class _BirthdayInputWidgetState extends State<BirthdayInputWidget> {
   final _dayController = TextEditingController();
   final _monthController = TextEditingController();
   final _yearController = TextEditingController();
-  int? _day;
-  int? _month;
-  int? _year;
   String? _errorMessage;
+
+  late FocusNode _dayFocusNode; // add this line
+  late FocusNode _monthFocusNode; // add this line
+  late FocusNode _yearFocusNode; // add this line
+
+  @override
+  void initState() {
+    super.initState();
+    _dayFocusNode = FocusNode(); // add this line
+    _monthFocusNode = FocusNode(); // add this line
+    _yearFocusNode = FocusNode(); // add this line
+  }
 
   @override
   void dispose() {
     _dayController.dispose();
     _monthController.dispose();
     _yearController.dispose();
+    _dayFocusNode.dispose(); // add this line
+    _monthFocusNode.dispose(); // add this line
+    _yearFocusNode.dispose();
     super.dispose();
   }
 
@@ -35,7 +46,7 @@ class _BirthdayInputWidgetState extends State<BirthdayInputWidget> {
           children: [
             Container(
               width: size.width * 0.16,
-              height: size.height * 0.091,
+              height: size.height * 0.092,
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.onPrimary,
                 borderRadius: BorderRadius.circular(12),
@@ -46,6 +57,7 @@ class _BirthdayInputWidgetState extends State<BirthdayInputWidget> {
                   const Center(child: Text('Day')),
                   Center(
                     child: TextField(
+                      textAlign: TextAlign.center,
                       maxLength: 2,
                       controller: _dayController,
                       keyboardType: TextInputType.number,
@@ -59,24 +71,20 @@ class _BirthdayInputWidgetState extends State<BirthdayInputWidget> {
                       ),
                       onChanged: (value) {
                         if (value.isEmpty) {
-                          _day = null;
                         } else {
                           final day = int.tryParse(value);
                           if (day != null && day >= 1 && day <= 31) {
-                            _day = day;
                             _errorMessage = null;
-                            void _focusNextField(
-                                FocusNode currentFocus, FocusNode nextFocus) {
-                              currentFocus.unfocus();
-                              FocusScope.of(context).requestFocus(nextFocus);
-                            }
                           } else {
-                            _day = null;
                             _errorMessage = 'Invalid';
                           }
                         }
                         _updateBirthday();
                         setState(() {});
+                      },
+                      onSubmitted: (_) {
+                        // Move focus to second text field
+                        FocusScope.of(context).requestFocus(_monthFocusNode);
                       },
                     ),
                   ),
@@ -86,7 +94,7 @@ class _BirthdayInputWidgetState extends State<BirthdayInputWidget> {
             const SizedBox(width: 20),
             Container(
               width: size.width * 0.16,
-              height: size.height * 0.091,
+              height: size.height * 0.092,
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.onPrimary,
                 borderRadius: BorderRadius.circular(12),
@@ -94,8 +102,10 @@ class _BirthdayInputWidgetState extends State<BirthdayInputWidget> {
               child: Padding(
                 padding: const EdgeInsets.only(top: 3, left: 2),
                 child: Column(children: [
-                  Center(child: Text('Month')),
+                  const Center(child: Text('Month')),
                   TextField(
+                    focusNode: _monthFocusNode,
+                    textAlign: TextAlign.center,
                     maxLength: 2,
                     controller: _monthController,
                     keyboardType: TextInputType.number,
@@ -109,26 +119,20 @@ class _BirthdayInputWidgetState extends State<BirthdayInputWidget> {
                     ),
                     onChanged: (value) {
                       if (value.isEmpty) {
-                        _month = null;
                       } else {
                         final month = int.tryParse(value);
                         if (month != null && month >= 1 && month <= 12) {
-                          _month = month;
                           _errorMessage = null;
-                          void _focusNextField(
-                              FocusNode currentFocus, FocusNode nextFocus) {
-                            currentFocus.unfocus();
-                            FocusScope.of(context).requestFocus(nextFocus);
-                          }
-
-                          ;
                         } else {
-                          _month = null;
                           _errorMessage = 'Invalid';
                         }
                       }
                       _updateBirthday();
                       setState(() {});
+                    },
+                    onSubmitted: (_) {
+                      // Move focus to third text field
+                      FocusScope.of(context).requestFocus(_yearFocusNode);
                     },
                   ),
                 ]),
@@ -137,7 +141,7 @@ class _BirthdayInputWidgetState extends State<BirthdayInputWidget> {
             const SizedBox(width: 20),
             Container(
               width: size.width * 0.16,
-              height: size.height * 0.091,
+              height: size.height * 0.092,
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.onPrimary,
                 borderRadius: BorderRadius.circular(12),
@@ -146,8 +150,10 @@ class _BirthdayInputWidgetState extends State<BirthdayInputWidget> {
                 padding: const EdgeInsets.only(top: 3, left: 2),
                 child: Column(
                   children: [
-                    Center(child: Text('Year')),
+                    const Center(child: Text('Year')),
                     TextField(
+                      focusNode: _yearFocusNode,
+                      textAlign: TextAlign.center,
                       maxLength: 4,
                       controller: _yearController,
                       keyboardType: TextInputType.number,
@@ -161,14 +167,11 @@ class _BirthdayInputWidgetState extends State<BirthdayInputWidget> {
                       ),
                       onChanged: (value) {
                         if (value.isEmpty) {
-                          _year = null;
                         } else {
                           final year = int.tryParse(value);
                           if (year != null && year >= 1950 && year <= 2022) {
-                            _year = year;
                             _errorMessage = null;
                           } else {
-                            _year = null;
                             _errorMessage = 'Invalid ';
                           }
                         }
@@ -195,10 +198,5 @@ class _BirthdayInputWidgetState extends State<BirthdayInputWidget> {
     );
   }
 
-  void _updateBirthday() {
-    final birthday = _day != null && _month != null && _year != null
-        ? DateTime(_year!, _month!, _day!)
-        : null;
-    // TODO: Do something with the birthday
-  }
+  void _updateBirthday() {}
 }

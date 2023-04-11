@@ -47,8 +47,7 @@ class _TelephoneNumber extends State<TelephoneNumber> {
                 fillColor: Theme.of(context).colorScheme.onPrimary,
                 labelText: widget.labelText,
                 counterText: '',
-                labelStyle: const TextStyle(
-                    color: Colors.white, fontWeight: FontWeight.bold),
+                labelStyle: const TextStyle(color: Colors.grey),
                 prefixIcon: Container(
                     padding:
                         const EdgeInsets.symmetric(horizontal: 15, vertical: 6),

@@ -38,8 +38,7 @@ class NumberForm extends StatelessWidget {
               fillColor: Theme.of(context).colorScheme.onPrimary,
               labelText: labelText,
               counterText: '',
-              labelStyle: const TextStyle(
-                  color: Colors.white, fontWeight: FontWeight.bold),
+              labelStyle: const TextStyle(color: Colors.grey),
             ),
           ),
         ),

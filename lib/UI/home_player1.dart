@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
-
-import 'package:testdev/UI/widgets/elevatedbutton.dart';
+import 'package:testdev/UI/widgets/avatar_round_route.dart';
 
 class HomeScreen extends StatefulWidget {
-  HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -22,19 +21,15 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: themeData.appBarTheme.backgroundColor,
         title: Text(
           "New activity",
-          style: themeData.textTheme.headline1,
+          style: themeData.textTheme.displayLarge,
         ),
         actions: <Widget>[
-          CircleAvatar(
-            maxRadius: 25,
-            backgroundImage: image != null
-                ? FileImage(image!) as ImageProvider
-                : const AssetImage('assets/images/cristiano_ronaldo.webp'),
-            child: InkWell(
-              onTap: () {
-                Navigator.of(context).pushNamed("/SettingPage");
-              },
-            ),
+          AvatarRoundR(
+            onTap: () {
+              return {
+                Navigator.of(context).pushNamed("/SettingPage"),
+              };
+            },
           ),
         ],
       ),

@@ -1,7 +1,7 @@
 import 'package:testdev/data/userT.dart';
 
 final allUsers = <User>[
-  User(
+  const User(
     name: 'Alexander Schmit',
     transactionAmount: '50€',
     transactionDate: '12.08',
@@ -11,7 +11,7 @@ final allUsers = <User>[
     function: 'Coach',
     number: '7',
   ),
-  User(
+  const User(
       name: 'Leo Reus',
       transactionAmount: '75€',
       transactionDate: '12.08',
@@ -20,7 +20,7 @@ final allUsers = <User>[
       team: 'U23',
       function: 'Physio',
       number: '9'),
-  User(
+  const User(
       name: 'Sam Kurz',
       transactionAmount: '20€',
       transactionDate: '12.08',
@@ -29,7 +29,7 @@ final allUsers = <User>[
       team: 'II',
       function: 'Player',
       number: '11'),
-  User(
+  const User(
       name: 'Sam Kurz',
       transactionAmount: '100€',
       transactionDate: '12.08',
@@ -38,7 +38,7 @@ final allUsers = <User>[
       team: 'II',
       function: 'Player',
       number: '11'),
-  User(
+  const User(
       name: 'Sam Kurz',
       transactionAmount: '25€',
       transactionDate: '12.08',

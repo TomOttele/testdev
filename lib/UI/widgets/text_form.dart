@@ -30,7 +30,7 @@ class TextForm extends StatelessWidget {
           fillColor: Theme.of(context).colorScheme.onPrimary,
           labelText: labelText,
           counterText: '',
-          labelStyle: Theme.of(context).textTheme.bodyLarge,
+          labelStyle: const TextStyle(color: Colors.grey),
         ),
       ),
     );

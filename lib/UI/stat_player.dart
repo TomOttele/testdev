@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:testdev/UI/widgets/choicechip_data.dart';
-import 'package:testdev/UI/widgets/choicechip.dart';
+import 'package:testdev/UI/widgets/avatar_polygone.dart';
+import 'package:testdev/UI/widgets/checkbox_state.dart';
+import 'package:testdev/UI/widgets/xchoicechip_data.dart';
+import 'package:testdev/UI/widgets/xchoicechip.dart';
 import 'package:testdev/UI/widgets/separator.dart';
-import 'package:flutter_polygon/flutter_polygon.dart';
-import 'package:circular_profile_avatar/circular_profile_avatar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -23,6 +23,14 @@ Future showToast(String message) async {
 class _PlayerStatState extends State<PlayerStat> {
   late ScrollController controller;
   final double spacing = 8;
+
+// Checkbox
+  final notifications = [
+    CheckBoxState(title: 'Season 22/23', subtitle: '22', icon: Icons.abc),
+    CheckBoxState(title: 'Season 21/22', subtitle: '22', icon: Icons.abc),
+    CheckBoxState(title: 'Season 20/21', subtitle: '22', icon: Icons.abc),
+    CheckBoxState(title: 'Season 20/19', subtitle: '22', icon: Icons.abc),
+  ];
 
   List<ChoiceChipData> choiceChips = ChoiceChips.all;
 
@@ -53,13 +61,11 @@ class _PlayerStatState extends State<PlayerStat> {
                       children: <Widget>[
                         ListTile(
                           title: Text('Season',
-                              textAlign: TextAlign.center,
+                              textAlign: TextAlign.start,
                               style: Theme.of(context).textTheme.displayLarge),
                         ),
-                        ListTile(
-                            title: Text('Season 22/23',
-                                textAlign: TextAlign.center,
-                                style: Theme.of(context).textTheme.bodyMedium))
+                        //
+                        ...notifications.map(buildSingleCheckbox).toList(),
                       ],
                     );
                   });
@@ -81,23 +87,9 @@ class _PlayerStatState extends State<PlayerStat> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      ClipPolygon(
-                        sides: 6,
-                        borderRadius: 8,
-                        child: Container(
-                          color: Colors.white,
-                          padding: const EdgeInsets.all(3.0),
-                          child: ClipPolygon(
-                            sides: 6,
-                            borderRadius: 8,
-                            child: CircularProfileAvatar(
-                              radius: 20,
-                              'https://i.goalzz.com/?i=ashraf-zamrani%2Flionelmessi.gif',
-                              borderWidth: 1,
-                            ),
-                          ),
-                        ),
-                      ),
+                      //
+                      const AvatarPolygone(),
+                      //
                       Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -900,4 +892,32 @@ class _PlayerStatState extends State<PlayerStat> {
       ),
     );
   }
+
+  Widget buildSingleCheckbox(CheckBoxState checkBox) => StatefulBuilder(
+        builder: (BuildContext context, StateSetter setState) {
+          return CheckboxListTile(
+            checkColor: Colors.red,
+            tileColor: Colors.transparent,
+            checkboxShape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15),
+            ),
+            value: checkBox.value,
+            onChanged: (value) => setState(() {
+              for (var notification in notifications) {
+                notification.value = !value!;
+              }
+
+              checkBox.value = value!;
+            }),
+            controlAffinity: ListTileControlAffinity.platform,
+            title: Text(
+              checkBox.title,
+              textAlign: TextAlign.start,
+              style: checkBox.value
+                  ? const TextStyle(fontWeight: FontWeight.bold)
+                  : const TextStyle(fontWeight: FontWeight.normal),
+            ),
+          );
+        },
+      );
 }

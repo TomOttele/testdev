@@ -6,7 +6,6 @@ import 'package:testdev/UI/more_player.dart';
 
 import 'package:testdev/UI/stat_player.dart';
 import 'package:testdev/UI/wallet_player.dart';
-import 'package:testdev/UI/widgets/scroll_to_hide_widget.dart';
 
 class RootWidget extends StatefulWidget {
   const RootWidget({super.key});
@@ -46,11 +45,11 @@ class _RootWidgetState extends State<RootWidget> {
           IndexedStack(
             index: _currentIndex,
             children: [
-              HomePage(),
-              WalletPage(),
+              const HomePage(),
+              const WalletPage(),
               ChatPage(),
-              PlayerStat(),
-              MorePage()
+              const PlayerStat(),
+              const MorePage()
             ],
           ),
           Align(

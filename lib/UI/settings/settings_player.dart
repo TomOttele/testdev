@@ -5,24 +5,16 @@ import 'package:flag/flag_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:testdev/UI/widgets/birthday_form.dart';
-import 'package:testdev/UI/widgets/choicechips_ms.dart';
-import 'package:testdev/UI/widgets/dropdown_button.dart';
-import 'package:testdev/UI/widgets/number_form.dart';
 import 'package:testdev/UI/widgets/separator.dart';
 import 'package:testdev/UI/widgets/text_form.dart';
 import 'package:testdev/application/theme_Service.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:testdev/UI/widgets/Xdata.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:testdev/UI/widgets/sortable_page.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:path/path.dart';
-import 'package:toggle_switch/toggle_switch.dart';
+import 'package:path/path.dart' as Path;
 
-import '../widgets/telephone_form.dart';
-import '../widgets/toggle_button.dart';
+import '../widgets/checkbox_state.dart';
 
 class SettingPage extends StatefulWidget {
   const SettingPage({Key? key}) : super(key: key);
@@ -36,15 +28,18 @@ class _SettingPageState extends State<SettingPage> {
   bool groupDisplay = true;
   bool groupLanguage = true;
 
-  List<bool> displayRadio = [false, true, false];
+// Checkbox
 
-  Future<void> _launchUrlSM(Uri url) async {
-    if (!await launchUrl(
-      url,
-    )) {
-      throw 'Could not launch $url';
-    }
-  }
+  final notifications = [
+    CheckBoxState(
+        title: 'Borussia Dortmund', subtitle: 'U19', icon: Icons.sports),
+    CheckBoxState(
+        title: 'Eintracht Trier', subtitle: 'U17', icon: Icons.directions_run),
+  ];
+
+//
+
+  List<bool> displayRadio = [false, true, false];
 
   Future pickImage(ImageSource source) async {
     try {
@@ -53,70 +48,36 @@ class _SettingPageState extends State<SettingPage> {
 
       final imagePermanent = await saveImagePermanently(image.path);
       setState(() => this.image = imagePermanent);
-    } on PlatformException catch (e) {
-      print('Failed to pick image: $e');
-    }
+    } on PlatformException {}
   }
 
   Future<File> saveImagePermanently(String imagePath) async {
     final directory = await getApplicationDocumentsDirectory();
-    final name = basename(imagePath);
+    final name = Path.basename(imagePath);
     final image = File('${directory.path}/$name');
 
     return File(imagePath).copy(image.path);
   }
 
-  Future _showBottomSheet(context) {
-    return showModalBottomSheet(
-        backgroundColor: Theme.of(context).colorScheme.onPrimary,
-        isScrollControlled: true,
-        context: context,
-        builder: (context) {
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              ListTile(
-                leading: const Icon(Icons.photo),
-                title: const Text('Photo'),
-                onTap: () {
-                  Navigator.pop(context);
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.music_note),
-                title: const Text('Music'),
-                onTap: () {
-                  Navigator.pop(context);
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.videocam),
-                title: const Text('Video'),
-                onTap: () {
-                  Navigator.pop(context);
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.share),
-                title: const Text('Share'),
-                onTap: () {
-                  Navigator.pop(context);
-                },
-              ),
-            ],
-          );
-        });
-  }
-
+  TableRow buildRow(List<String> cells) => TableRow(
+        children: cells.map((cell) {
+          return Padding(
+              padding: const EdgeInsets.only(top: 15),
+              child: Text(
+                  maxLines: 1,
+                  style: Theme.of(context).textTheme.bodyMedium,
+                  cell));
+        }).toList(),
+      );
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     return Consumer<ThemeService>(builder: (context, themeService, child) {
       return Scaffold(
         //
         body: NestedScrollView(
             headerSliverBuilder: (context, innerBoxIsScrolled) {
               return <Widget>[
+                //
                 // AppBar
                 //
                 SliverAppBar(
@@ -129,9 +90,10 @@ class _SettingPageState extends State<SettingPage> {
                   title: InkWell(
                     child: const Text('Account selection'),
                     onTap: () {
+                      //
                       showModalBottomSheet(
                           backgroundColor:
-                              Theme.of(context).colorScheme.onPrimary,
+                              Theme.of(context).colorScheme.primaryContainer,
                           isScrollControlled: true,
                           shape: const RoundedRectangleBorder(
                             borderRadius:
@@ -139,59 +101,69 @@ class _SettingPageState extends State<SettingPage> {
                           ),
                           context: context,
                           builder: (context) {
-                            return Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                ListTile(
-                                  title: Text('Choose your account',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headline1),
-                                ),
-                                DataTable(
-                                  columns: const <DataColumn>[
-                                    DataColumn(
-                                        label: Expanded(child: Text('Club'))),
-                                    DataColumn(
-                                        label: Expanded(child: Text(''))),
-                                    DataColumn(
-                                        label: Expanded(child: Text('Team'))),
-                                    DataColumn(
-                                      label: Expanded(child: Text('Function')),
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    ListTile(
+                                      title: Text('Choose your account',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .displayLarge),
                                     ),
-                                  ],
-                                  rows: const <DataRow>[
-                                    DataRow(
-                                      cells: <DataCell>[
-                                        DataCell(CircleAvatar(
-                                          maxRadius: 40,
-                                          backgroundImage: AssetImage(
-                                              'assets/images/Borussia_Dortmund.svg.png'),
-                                        )),
-                                        DataCell(Text('Borussia Dortmund')),
-                                        DataCell(Text('U19')),
-                                        DataCell(Text('Coach')),
-                                      ],
-                                    ),
-                                    DataRow(
-                                      cells: <DataCell>[
-                                        DataCell(Text('')),
-                                        DataCell(Text('Borussia Dortmund')),
-                                        DataCell(Text('U23')),
-                                        DataCell(Text('Physio')),
-                                      ],
-                                    ),
-                                    DataRow(
-                                      cells: <DataCell>[
-                                        DataCell(Text('')),
-                                        DataCell(Text('Eintracht Trier')),
-                                        DataCell(Text('II')),
-                                        DataCell(Text('Player')),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ],
+                                    ...notifications
+                                        .map(buildSingleCheckbox)
+                                        .toList(),
+                                    const Separator()
+                                  ]
+
+                                  /*
+                                  DataTable(
+                                    columns: const <DataColumn>[
+                                      DataColumn(
+                                          label: Expanded(child: Text('Club'))),
+                                      DataColumn(
+                                          label: Expanded(child: Text(''))),
+                                      DataColumn(
+                                          label: Expanded(child: Text('Team'))),
+                                      DataColumn(
+                                        label: Expanded(child: Text('Function')),
+                                      ),
+                                    ],
+                                    rows: const <DataRow>[
+                                      DataRow(
+                                        cells: <DataCell>[
+                                          DataCell(CircleAvatar(
+                                            maxRadius: 40,
+                                            backgroundImage: AssetImage(
+                                                'assets/images/Borussia_Dortmund.svg.png'),
+                                          )),
+                                          DataCell(Text('Borussia Dortmund')),
+                                          DataCell(Text('U19')),
+                                          DataCell(Text('Coach')),
+                                        ],
+                                      ),
+                                      DataRow(
+                                        cells: <DataCell>[
+                                          DataCell(Text('')),
+                                          DataCell(Text('Borussia Dortmund')),
+                                          DataCell(Text('U23')),
+                                          DataCell(Text('Physio')),
+                                        ],
+                                      ),
+                                      DataRow(
+                                        cells: <DataCell>[
+                                          DataCell(Text('')),
+                                          DataCell(Text('Eintracht Trier')),
+                                          DataCell(Text('II')),
+                                          DataCell(Text('Player')),
+                                        ],
+                                      ),
+                                    ],
+                                  ),*/
+
+                                  ),
                             );
                           });
                     },
@@ -209,84 +181,92 @@ class _SettingPageState extends State<SettingPage> {
               // 1. ListTile (Username and profile picture)
               //
 
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                Expanded(
-                  child: Text('Cristiano Ronaldo da Silva Da Cruz ',
-                      textAlign: TextAlign.start,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.headline1),
-                ),
-                CircleAvatar(
-                  maxRadius: 30,
-                  backgroundImage: image != null
-                      ? FileImage(image!) as ImageProvider
-                      : const AssetImage(
-                          'assets/images/cristiano_ronaldo.webp'),
-                  child: InkWell(onTap: () {
-                    showModalBottomSheet(
-                        backgroundColor:
-                            Theme.of(context).colorScheme.onPrimary,
-                        isScrollControlled: true,
-                        shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.vertical(
-                                top: Radius.circular(15))),
-                        context: context,
-                        builder: (context) {
-                          return Column(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                ListTile(
-                                  title: Text(
-                                    'Choose a picture',
-                                    style:
-                                        Theme.of(context).textTheme.headline1,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  //
+                  Expanded(
+                    child: Text('Cristiano Ronaldo',
+                        textAlign: TextAlign.start,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).textTheme.displayLarge),
+                  ),
+                  CircleAvatar(
+                    maxRadius: 30,
+                    backgroundImage: image != null
+                        ? FileImage(image!) as ImageProvider
+                        : const AssetImage(
+                            'assets/images/cristiano_ronaldo.webp'),
+                    child: InkWell(
+                      onTap: () {
+                        showModalBottomSheet(
+                          backgroundColor:
+                              Theme.of(context).colorScheme.primaryContainer,
+                          isScrollControlled: true,
+                          shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(15))),
+                          context: context,
+                          builder: (context) {
+                            return Column(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  ListTile(
+                                    title: Text(
+                                      'Choose a picture',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .displayLarge,
+                                    ),
                                   ),
-                                ),
-                                const Separator(),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    InkWell(
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: const [
-                                          FaIcon(
-                                            FontAwesomeIcons.image,
-                                            size: 40,
-                                          ),
-                                          SizedBox(height: 10),
-                                          Text('Gallery')
-                                        ],
+                                  const Separator(),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      InkWell(
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: const [
+                                            FaIcon(
+                                              FontAwesomeIcons.image,
+                                              size: 40,
+                                            ),
+                                            SizedBox(height: 10),
+                                            Text('Gallery')
+                                          ],
+                                        ),
+                                        onTap: () =>
+                                            pickImage(ImageSource.gallery),
                                       ),
-                                      onTap: () =>
-                                          pickImage(ImageSource.gallery),
-                                    ),
-                                    const SizedBox(width: 80),
-                                    InkWell(
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: const [
-                                          FaIcon(FontAwesomeIcons.camera,
-                                              size: 40),
-                                          SizedBox(height: 10),
-                                          Text('Camera')
-                                        ],
+                                      const SizedBox(width: 80),
+                                      InkWell(
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: const [
+                                            FaIcon(FontAwesomeIcons.camera,
+                                                size: 40),
+                                            SizedBox(height: 10),
+                                            Text('Camera')
+                                          ],
+                                        ),
+                                        onTap: () =>
+                                            pickImage(ImageSource.camera),
                                       ),
-                                      onTap: () =>
-                                          pickImage(ImageSource.camera),
-                                    ),
-                                  ],
-                                ),
-                                const Separator(),
-                              ]);
-                        });
-                  }),
-                )
-              ]),
+                                    ],
+                                  ),
+                                  const Separator(),
+                                ]);
+                          },
+                        );
+                      },
+                    ),
+                  )
+                ],
+              ),
 
               //
               // Sizedbox
@@ -307,92 +287,11 @@ class _SettingPageState extends State<SettingPage> {
                 title: Text('Personal information',
                     style: Theme.of(context).textTheme.bodyLarge),
                 onTap: () {
-                  showModalBottomSheet(
-                    backgroundColor:
-                        Theme.of(context).colorScheme.primaryContainer,
-                    isScrollControlled: true,
-                    shape: const RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.vertical(top: Radius.circular(15)),
-                    ),
-                    context: context,
-                    builder: (context) {
-                      return Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: ListView(
-                          children: <Widget>[
-                            ListTile(
-                              title: Text('Personal information',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .displayMedium),
-                            ),
-                            const TextForm(labelText: 'Name', maxLenght: 30),
-                            const Separator(),
-                            const BirthdayInputWidget(),
-                            const Separator(),
-                            const TextForm(labelText: 'Address', maxLenght: 50),
-                            const Separator(),
-                            const NumberForm(
-                                labelText: 'Telephone', maxLenght: 9),
-                            const Separator(),
-                            const TelephoneNumber(
-                                labelText: 'Telephone', maxLenght: 20),
-                            const Separator(),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                NumberForm(
-                                    width: size.width * 0.4,
-                                    labelText: 'Height',
-                                    maxLenght: 3,
-                                    hintText: 'cm'),
-                                NumberForm(
-                                    width: size.width * 0.4,
-                                    labelText: 'Weight',
-                                    maxLenght: 3,
-                                    hintText: 'kg'),
-                              ],
-                            ),
-                            const Separator(),
-                            const TextForm(
-                                labelText: 'Nationality', maxLenght: 20),
-                            const Separator(),
-                            Text(
-                              'Preferred foot',
-                              style: Theme.of(context).textTheme.bodyMedium,
-                            ),
-                            ToggleButton(),
-                            const Separator(),
-                            NumberForm(
-                              width: size.width * 0.4,
-                              labelText: 'Shirt number',
-                              maxLenght: 3,
-                            ),
-                            const Separator(),
-                            DropDownMenu(items: const [
-                              'GK',
-                              'RB',
-                              'CB',
-                              'LB',
-                              'CDM',
-                              'CM',
-                              'COM',
-                              'LW',
-                              'RW',
-                              'ST'
-                            ], labelText: 'Position'),
-                            const Separator(),
-                            ChoiceChipsMS(),
-                            const Separator(),
-                          ],
-                        ),
-                      );
-                    },
-                  );
+                  Navigator.of(context)
+                      .pushNamed("/SettingsPersonalInformation");
                 },
               ),
+
               //
               // SizedBox
               //
@@ -406,10 +305,11 @@ class _SettingPageState extends State<SettingPage> {
                       borderRadius:
                           BorderRadius.vertical(top: Radius.circular(15))),
                   title: Text('Email',
-                      style: Theme.of(context).textTheme.bodyText1),
+                      style: Theme.of(context).textTheme.bodyLarge),
                   onTap: () {
                     showModalBottomSheet(
-                      backgroundColor: Theme.of(context).colorScheme.onPrimary,
+                      backgroundColor:
+                          Theme.of(context).colorScheme.primaryContainer,
                       isScrollControlled: true,
                       shape: const RoundedRectangleBorder(
                           borderRadius:
@@ -417,43 +317,27 @@ class _SettingPageState extends State<SettingPage> {
                       context: context,
                       builder: (context) {
                         return Column(
-                            mainAxisSize: MainAxisSize.min,
+                            mainAxisSize: MainAxisSize.max,
                             children: <Widget>[
                               ListTile(
                                 title: Text('Change credentials',
-                                    style:
-                                        Theme.of(context).textTheme.headline1),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .displayLarge),
                               ),
                               const SizedBox(height: 10),
-                              Padding(
-                                padding: const EdgeInsets.all(8),
-                                child: TextFormField(
-                                  decoration: InputDecoration(
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide: const BorderSide(
-                                            color: Colors.blue),
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                      labelText: 'Email',
-                                      border: const OutlineInputBorder(
-                                          borderSide:
-                                              BorderSide(color: Colors.blue))),
-                                ),
-                              ),
+                              const Padding(
+                                  padding: EdgeInsets.all(8),
+                                  child: TextForm(
+                                    labelText: 'Email',
+                                    maxLenght: 30,
+                                  )),
                               const SizedBox(height: 15),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: TextFormField(
-                                  decoration: InputDecoration(
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide: const BorderSide(
-                                            color: Colors.blue),
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                      labelText: 'Password',
-                                      border: const OutlineInputBorder(
-                                          borderSide:
-                                              BorderSide(color: Colors.blue))),
+                              const Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: TextForm(
+                                  labelText: 'Password',
+                                  maxLenght: 100,
                                 ),
                               ),
                             ]);
@@ -471,10 +355,11 @@ class _SettingPageState extends State<SettingPage> {
                           bottomLeft: Radius.circular(15),
                           bottomRight: Radius.circular(15))),
                   title: Text('Password',
-                      style: Theme.of(context).textTheme.bodyText1),
+                      style: Theme.of(context).textTheme.bodyLarge),
                   onTap: () {
                     showModalBottomSheet(
-                      backgroundColor: Theme.of(context).colorScheme.onPrimary,
+                      backgroundColor:
+                          Theme.of(context).colorScheme.primaryContainer,
                       isScrollControlled: true,
                       shape: const RoundedRectangleBorder(
                           borderRadius:
@@ -482,43 +367,27 @@ class _SettingPageState extends State<SettingPage> {
                       context: context,
                       builder: (context) {
                         return Column(
-                            mainAxisSize: MainAxisSize.min,
+                            mainAxisSize: MainAxisSize.max,
                             children: <Widget>[
                               ListTile(
                                 title: Text('Change credentials',
-                                    style:
-                                        Theme.of(context).textTheme.headline1),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .displayLarge),
                               ),
                               const SizedBox(height: 10),
-                              Padding(
-                                padding: const EdgeInsets.all(8),
-                                child: TextFormField(
-                                  decoration: InputDecoration(
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide: const BorderSide(
-                                            color: Colors.blue),
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                      labelText: 'Email',
-                                      border: const OutlineInputBorder(
-                                          borderSide:
-                                              BorderSide(color: Colors.blue))),
-                                ),
-                              ),
+                              const Padding(
+                                  padding: EdgeInsets.all(8),
+                                  child: TextForm(
+                                    labelText: 'Email',
+                                    maxLenght: 30,
+                                  )),
                               const SizedBox(height: 15),
-                              Padding(
-                                padding: const EdgeInsets.all(8),
-                                child: TextFormField(
-                                  decoration: InputDecoration(
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide: const BorderSide(
-                                            color: Colors.blue),
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                      labelText: 'Password',
-                                      border: const OutlineInputBorder(
-                                          borderSide:
-                                              BorderSide(color: Colors.blue))),
+                              const Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: TextForm(
+                                  labelText: 'Password',
+                                  maxLenght: 100,
                                 ),
                               ),
                             ]);
@@ -540,11 +409,12 @@ class _SettingPageState extends State<SettingPage> {
                         BorderRadius.vertical(top: Radius.circular(15))),
                 title: Text(
                   'Language',
-                  style: Theme.of(context).textTheme.bodyText1,
+                  style: Theme.of(context).textTheme.bodyLarge,
                 ),
                 onTap: () {
                   showModalBottomSheet(
-                    backgroundColor: Theme.of(context).colorScheme.onPrimary,
+                    backgroundColor:
+                        Theme.of(context).colorScheme.primaryContainer,
                     isScrollControlled: true,
                     shape: const RoundedRectangleBorder(
                         borderRadius:
@@ -556,7 +426,8 @@ class _SettingPageState extends State<SettingPage> {
                         children: <Widget>[
                           ListTile(
                             title: Text('Choose language',
-                                style: Theme.of(context).textTheme.headline1),
+                                style:
+                                    Theme.of(context).textTheme.displayLarge),
                           ),
                           Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -576,7 +447,6 @@ class _SettingPageState extends State<SettingPage> {
                                 value: true,
                                 groupValue: groupLanguage,
                                 onChanged: (T) {
-                                  print(T);
                                   setState(() {
                                     groupLanguage = !groupLanguage;
                                   });
@@ -601,11 +471,11 @@ class _SettingPageState extends State<SettingPage> {
                           bottomLeft: Radius.circular(15),
                           bottomRight: Radius.circular(15))),
                   title: Text('Display',
-                      style: Theme.of(context).textTheme.bodyText1),
+                      style: Theme.of(context).textTheme.bodyLarge),
                   onTap: () {
                     showModalBottomSheet(
                         backgroundColor:
-                            Theme.of(context).colorScheme.onPrimary,
+                            Theme.of(context).colorScheme.primaryContainer,
                         isScrollControlled: true,
                         shape: const RoundedRectangleBorder(
                             borderRadius: BorderRadius.vertical(
@@ -617,19 +487,25 @@ class _SettingPageState extends State<SettingPage> {
                             children: <Widget>[
                               ListTile(
                                 title: Text('Display',
-                                    style:
-                                        Theme.of(context).textTheme.headline1),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .displayLarge),
                               ),
                               const SizedBox(height: 15),
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  InkWell(
+                                  /*InkWell(
                                     child: Column(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
+                                        const Text(
+                                          'Coming',
+                                          style: TextStyle(
+                                              fontStyle: FontStyle.italic),
+                                        ),
                                         const SizedBox(
                                           height: 10,
                                         ),
@@ -641,6 +517,9 @@ class _SettingPageState extends State<SettingPage> {
                                         ),
                                         const SizedBox(height: 10),
                                         const Text('Light mode'),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
                                         Radio(
                                           value: displayRadio[0],
                                           groupValue: groupDisplay,
@@ -651,17 +530,21 @@ class _SettingPageState extends State<SettingPage> {
                                                   !displayRadio[0];
                                             });
                                           },
-                                        ),
+                                        )
                                       ],
                                     ),
-                                  ),
+                                  ),*/
                                   InkWell(
                                     child: Column(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
-                                        // ignore: prefer_const_constructors
-                                        SizedBox(
+                                        const Text(
+                                          '',
+                                          style: TextStyle(
+                                              fontStyle: FontStyle.italic),
+                                        ),
+                                        const SizedBox(
                                           height: 10,
                                         ),
                                         const FaIcon(
@@ -675,7 +558,6 @@ class _SettingPageState extends State<SettingPage> {
                                           value: displayRadio[1],
                                           groupValue: groupDisplay,
                                           onChanged: (T) {
-                                            print(T);
                                             setState(() {
                                               displayRadio[1] =
                                                   !displayRadio[1];
@@ -685,11 +567,16 @@ class _SettingPageState extends State<SettingPage> {
                                       ],
                                     ),
                                   ),
-                                  InkWell(
+                                  /*InkWell(
                                     child: Column(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
+                                        const Text(
+                                          'Coming',
+                                          style: TextStyle(
+                                              fontStyle: FontStyle.italic),
+                                        ),
                                         const SizedBox(
                                           height: 10,
                                         ),
@@ -713,10 +600,10 @@ class _SettingPageState extends State<SettingPage> {
                                         ),
                                       ],
                                     ),
-                                  ),
+                                  ),*/
                                 ],
                               ),
-                              const Separator(),
+                              /*const Separator(),
                               Row(
                                 children: [
                                   const SizedBox(width: 20),
@@ -731,7 +618,7 @@ class _SettingPageState extends State<SettingPage> {
                                             .toggleTheme();
                                       })
                                 ],
-                              ),
+                              ),*/
                               const SizedBox(height: 15),
                             ],
                           );
@@ -752,10 +639,11 @@ class _SettingPageState extends State<SettingPage> {
                     borderRadius:
                         BorderRadius.vertical(top: Radius.circular(15))),
                 title: Text('Follow us',
-                    style: Theme.of(context).textTheme.bodyText1),
+                    style: Theme.of(context).textTheme.bodyLarge),
                 onTap: () {
                   showModalBottomSheet(
-                    backgroundColor: Theme.of(context).colorScheme.onPrimary,
+                    backgroundColor:
+                        Theme.of(context).colorScheme.primaryContainer,
                     isScrollControlled: true,
                     shape: const RoundedRectangleBorder(
                         borderRadius:
@@ -767,7 +655,8 @@ class _SettingPageState extends State<SettingPage> {
                         children: <Widget>[
                           ListTile(
                             title: Text('Follow us',
-                                style: Theme.of(context).textTheme.headline1),
+                                style:
+                                    Theme.of(context).textTheme.displayLarge),
                           ),
                           ListTile(
                             leading: const Icon(
@@ -841,10 +730,11 @@ class _SettingPageState extends State<SettingPage> {
               ListTile(
                   tileColor: Theme.of(context).colorScheme.onPrimary,
                   title: Text('Idea box and feedback',
-                      style: Theme.of(context).textTheme.bodyText1),
+                      style: Theme.of(context).textTheme.bodyLarge),
                   onTap: () {
                     showModalBottomSheet(
-                      backgroundColor: Theme.of(context).colorScheme.onPrimary,
+                      backgroundColor:
+                          Theme.of(context).colorScheme.primaryContainer,
                       isScrollControlled: true,
                       shape: const RoundedRectangleBorder(
                           borderRadius:
@@ -852,7 +742,7 @@ class _SettingPageState extends State<SettingPage> {
                       context: context,
                       builder: (context) {
                         return Column(
-                          mainAxisSize: MainAxisSize.min,
+                          mainAxisSize: MainAxisSize.max,
                           children: <Widget>[
                             ListTile(
                                 leading: const Icon(
@@ -861,25 +751,14 @@ class _SettingPageState extends State<SettingPage> {
                                   color: Colors.yellow,
                                 ),
                                 title: Text('Idea box',
-                                    style:
-                                        Theme.of(context).textTheme.headline1),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .displayLarge),
                                 subtitle: const Text(
                                     'Help us to innovate by submitting your idea below')),
-                            Padding(
-                              padding: const EdgeInsets.all(10),
-                              child: TextFormField(
-                                decoration: InputDecoration(
-                                    hintText: 'Innovation...',
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide:
-                                          const BorderSide(color: Colors.blue),
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    border: const OutlineInputBorder(
-                                        borderSide:
-                                            BorderSide(color: Colors.blue))),
-                              ),
-                            ),
+                            const Padding(
+                                padding: EdgeInsets.all(10),
+                                child: TextForm(labelText: '', maxLenght: 500)),
 
                             //
                             const Separator(),
@@ -889,25 +768,17 @@ class _SettingPageState extends State<SettingPage> {
                                 leading: const Icon(Icons.bug_report,
                                     size: 45, color: Colors.red),
                                 title: Text('Report a bug',
-                                    style:
-                                        Theme.of(context).textTheme.headline1),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .displayLarge),
                                 subtitle: const Text(
                                     'Help us to innovate by submitting your idea below')),
-                            Padding(
-                              padding: const EdgeInsets.all(10),
-                              child: TextFormField(
-                                decoration: InputDecoration(
-                                    hintText: 'Report a bug...',
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide:
-                                          const BorderSide(color: Colors.blue),
-                                      borderRadius: BorderRadius.circular(15),
-                                    ),
-                                    border: const OutlineInputBorder(
-                                        borderSide:
-                                            BorderSide(color: Colors.blue))),
-                              ),
-                            ),
+                            const Padding(
+                                padding: EdgeInsets.all(10),
+                                child: TextForm(
+                                  labelText: '',
+                                  maxLenght: 500,
+                                )),
                             //
                             const Separator(),
                             //
@@ -927,11 +798,11 @@ class _SettingPageState extends State<SettingPage> {
                           bottomLeft: Radius.circular(15),
                           bottomRight: Radius.circular(15))),
                   title: Text('Rate Querpass',
-                      style: Theme.of(context).textTheme.bodyText1),
+                      style: Theme.of(context).textTheme.bodyLarge),
                   onTap: () {
                     showModalBottomSheet(
                         backgroundColor:
-                            Theme.of(context).colorScheme.onPrimary,
+                            Theme.of(context).colorScheme.primaryContainer,
                         isScrollControlled: true,
                         shape: const RoundedRectangleBorder(
                             borderRadius: BorderRadius.vertical(
@@ -942,26 +813,12 @@ class _SettingPageState extends State<SettingPage> {
                             mainAxisSize: MainAxisSize.min,
                             children: <Widget>[
                               ListTile(
-                                title: Text('Do you like our app?',
-                                    style:
-                                        Theme.of(context).textTheme.headline1),
+                                title: Text('Coming soon...',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .displayLarge),
                               ),
                               const SizedBox(height: 15),
-                              Row(
-                                children: [
-                                  const SizedBox(width: 20),
-                                  const Text("Dark Theme"),
-                                  const SizedBox(width: 10),
-                                  Switch(
-                                      value: Provider.of<ThemeService>(context)
-                                          .isDarkModeOn,
-                                      onChanged: (value) {
-                                        Provider.of<ThemeService>(context,
-                                                listen: false)
-                                            .toggleTheme();
-                                      })
-                                ],
-                              ),
                               const SizedBox(height: 15),
                             ],
                           );
@@ -982,7 +839,7 @@ class _SettingPageState extends State<SettingPage> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15)),
                 title: Text('Terms and Conditions',
-                    style: Theme.of(context).textTheme.bodyText1),
+                    style: Theme.of(context).textTheme.bodyLarge),
                 onTap: () => launchUrl(
                   Uri.parse('https://www.clubee.com/terms-conditions'),
                   mode: LaunchMode.externalApplication,
@@ -1000,154 +857,47 @@ class _SettingPageState extends State<SettingPage> {
               ListTile(
                 tileColor: Theme.of(context).colorScheme.onPrimary,
                 title: Text('Log out',
-                    style: Theme.of(context).textTheme.bodyText1),
+                    style: Theme.of(context).textTheme.bodyLarge),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15)),
                 leading: const Icon(Icons.logout, color: Colors.red),
               ),
-
-              //
-
-              //
-
-              //Link(
-              //target: LinkTarget.self,
-              // uri: Uri.parse('https://rtl.lu'),
-              //builder: (context, followLink) => ListTile(
-              //  tileColor: Theme.of(context).colorScheme.onPrimary,
-              // shape: const RoundedRectangleBorder(
-              // borderRadius: BorderRadius.only(
-              //    bottomLeft: Radius.circular(15),
-              //   bottomRight: Radius.circular(15),
-              // ),
-              // ),
-              //  title: Text('Terms of Use',
-              //     style: Theme.of(context).textTheme.bodyText1),
-              // onTap: () => followLink),
-              // ),
-              //
-              // SizedBox
-              //
-              const Separator(),
-
-              //
-
-              ListTile(
-                tileColor: Theme.of(context).colorScheme.onPrimary,
-                shape: const RoundedRectangleBorder(
-                    borderRadius:
-                        BorderRadius.vertical(top: Radius.circular(15))),
-                title:
-                    Text('Eat', style: Theme.of(context).textTheme.bodyText1),
-              ),
-
-              //
-              // Feedback and Suggestions
-              //
-              ListTile(
-                tileColor: Theme.of(context).colorScheme.onPrimary,
-                title:
-                    Text('Sleep', style: Theme.of(context).textTheme.bodyText1),
-                onTap: () => launchUrl(
-                  Uri.parse('https://www.youtube.com/watch?v=y6120QOlsfU'),
-                  mode: LaunchMode.externalApplication,
-                ),
-              ),
-
-              //
-              // Terms and conditions
-
-              ListTile(
-                  tileColor: Theme.of(context).colorScheme.onPrimary,
-                  shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(15),
-                          bottomRight: Radius.circular(15))),
-                  title: Text('Follow us',
-                      style: Theme.of(context).textTheme.bodyText1),
-                  onTap: () {
-                    showModalBottomSheet(
-                        backgroundColor:
-                            Theme.of(context).colorScheme.onPrimary,
-                        isScrollControlled: true,
-                        shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.vertical(
-                                top: Radius.circular(15))),
-                        context: context,
-                        builder: (context) {
-                          return Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: data.map((item) {
-                              return Card(
-                                  child: ListTile(
-                                onTap: () => _launchUrlSM(item['url']),
-                                leading: CircleAvatar(
-                                  backgroundColor: Colors.grey.shade100,
-                                  child: FaIcon(
-                                    item['icon'],
-                                    color: item['color'],
-                                    size: 30,
-                                  ),
-                                ),
-                                title: Text(item['name'],
-                                    style:
-                                        Theme.of(context).textTheme.headline1),
-                              ));
-                            }).toList(),
-                          );
-                        });
-                  }),
-
-              //
-              // SizedBox
-              //
-              const Separator(),
-
-              //
-              // Log out
-              //
-              ListTile(
-                  tileColor: Theme.of(context).colorScheme.onPrimary,
-                  title: Text('Log out',
-                      style: Theme.of(context).textTheme.bodyText1),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15)),
-                  leading: const Icon(Icons.logout, color: Colors.red),
-                  onTap: () {
-                    showModalBottomSheet(
-                        backgroundColor:
-                            Theme.of(context).colorScheme.onPrimary,
-                        isScrollControlled: false,
-                        shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.vertical(
-                                top: Radius.circular(15))),
-                        context: context,
-                        builder: (context) {
-                          return Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                ListTile(
-                                  title: Text('Choose your account',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headline1),
-                                ),
-                                Expanded(child: SortablePage()),
-                              ],
-                            ),
-                          );
-                        });
-                  }),
-
-              //
-              const Separator(),
-              //
             ]))),
       );
     });
   }
 
   void takePhoto(ImageSource camera) {}
+
+  Widget buildSingleCheckbox(CheckBoxState checkBox) => StatefulBuilder(
+        builder: (BuildContext context, StateSetter setState) {
+          return CheckboxListTile(
+            secondary: Icon(checkBox.icon),
+            tileColor: Colors.transparent,
+            checkboxShape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15),
+            ),
+            value: checkBox.value,
+            onChanged: (value) => setState(() {
+              for (var notification in notifications) {
+                notification.value = !value!;
+              }
+
+              checkBox.value = value!;
+            }),
+            controlAffinity: ListTileControlAffinity.platform,
+            title: Text(
+              checkBox.title,
+              textAlign: TextAlign.start,
+              style: checkBox.value
+                  ? const TextStyle(fontWeight: FontWeight.bold)
+                  : const TextStyle(fontWeight: FontWeight.normal),
+            ),
+            subtitle: Text(
+              checkBox.subtitle,
+              textAlign: TextAlign.start,
+            ),
+          );
+        },
+      );
 }

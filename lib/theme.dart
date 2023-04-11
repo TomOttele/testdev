@@ -16,8 +16,8 @@ class AppTheme {
 //dark
   static const Color _darkPrimaryColor = Colors.black;
   static const Color _darkPrimaryBottomSheetColor =
-      Color.fromARGB(255, 20, 20, 20);
-  static const Color _darkOnPrimaryColor = Color.fromARGB(255, 44, 44, 44);
+      Color.fromARGB(255, 33, 33, 33);
+  static const Color _darkOnPrimaryColor = Color.fromARGB(255, 61, 61, 61);
   static const Color _darkTextColorPrimary = Colors.white;
   static const Color _darkTextColorSecondary =
       Color.fromARGB(255, 109, 109, 109);
@@ -33,10 +33,10 @@ class AppTheme {
       fontWeight: FontWeight.bold);
 
   static const TextStyle _lightHeadingText = TextStyle(
-      color: _lightTextColorPrimary,
-      fontSize: 22,
-      fontFamily: "Tenorite",
-      fontWeight: FontWeight.bold);
+    color: _lightTextColorPrimary,
+    fontSize: 22,
+    fontFamily: "Tenorite", /*fontWeight: FontWeight.bold*/
+  );
 
   static const TextStyle _lightHeading2Text = TextStyle(
     color: _lightTextColorPrimary,

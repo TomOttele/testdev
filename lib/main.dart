@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
+import 'package:testdev/UI/settings/settings_personal_information.dart';
 import 'package:testdev/UI/settings/settings_player.dart';
 import 'package:testdev/application/theme_Service.dart';
 import 'package:testdev/root.dart';
@@ -27,7 +27,9 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           routes: <String, WidgetBuilder>{
             "/root": (BuildContext context) => const RootWidget(),
-            "/SettingPage": (BuildContext context) => SettingPage(),
+            "/SettingPage": (BuildContext context) => const SettingPage(),
+            "/SettingsPersonalInformation": (BuildContext context) =>
+                const SettingsPersonalInformation(),
           },
           home: const RootWidget());
     });
