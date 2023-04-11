@@ -184,7 +184,7 @@ class _SettingsPersonalInformationState
                 children: [
                   DropDownMenu(
                       width: size.width * 0.4,
-                      items: const ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
+                      items: const ['XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL'],
                       labelText: 'Cloth size'),
                   NumberForm(
                       width: size.width * 0.4,
