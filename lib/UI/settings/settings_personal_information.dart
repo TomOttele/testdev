@@ -145,9 +145,7 @@ class _SettingsPersonalInformationState
               const Separator(),
               const TextForm(labelText: 'Name', maxLenght: 30),
               const Separator(),
-              const Text('Birthday'),
-              const BirthdayInputWidget(),
-              const Separator(),
+
               const TextForm(labelText: 'Address', maxLenght: 50),
               const Separator(),
               const TelephoneNumber(labelText: 'Telephone', maxLenght: 20),
@@ -158,6 +156,9 @@ class _SettingsPersonalInformationState
 
               Text('Section 2',
                   style: Theme.of(context).textTheme.displayMedium),
+              const Text('Birthday'),
+              const BirthdayInputWidget(),
+
               const Separator(),
               const TextForm(labelText: 'Nationality', maxLenght: 20),
               const Separator(),
@@ -203,6 +204,12 @@ class _SettingsPersonalInformationState
                 text1: 'Left',
                 text2: 'Right',
               ),
+              const Separator(),
+              const Separator(),
+
+// Section 3
+              Text('Football',
+                  style: Theme.of(context).textTheme.displayMedium),
               const Separator(),
               NumberForm(
                 width: size.width * 0.4,
@@ -262,6 +269,7 @@ class _SettingsPersonalInformationState
                 text2: 'No',
               ),
               const Separator(),
+              const Separator(),
 
               // Section 3
 
@@ -283,7 +291,7 @@ class _SettingsPersonalInformationState
               ], labelText: 'Relation'),
 
               const Separator(),
-
+              const Separator(),
               // Section 4
 
               Text('Medical information',

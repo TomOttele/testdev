@@ -861,6 +861,9 @@ class _SettingPageState extends State<SettingPage> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15)),
                 leading: const Icon(Icons.logout, color: Colors.red),
+                /*onTap: () {
+                  context.read<AuthenticationService>().signOut();
+                },*/
               ),
             ]))),
       );

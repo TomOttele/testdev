@@ -67,7 +67,7 @@ class _TelephoneNumber extends State<TelephoneNumber> {
                             children: [
                               Container(
                                 child: countryCode != null
-                                    ? countryCode!.flagImage as Widget
+                                    ? countryCode?.flagImage as Widget
                                     : null,
                               ),
                               Container(
