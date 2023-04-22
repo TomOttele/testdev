@@ -11,8 +11,7 @@ class ChoiceChipsMS extends StatefulWidget {
 }
 
 class _ChoiceChipsMSState extends State<ChoiceChipsMS> {
-  int tag = 1;
-  List<String> tags = [];
+  List<String> selectedTags = [];
   List<String> options = [
     'GK',
     'RB',
@@ -27,6 +26,23 @@ class _ChoiceChipsMSState extends State<ChoiceChipsMS> {
     'CO',
     'TT'
   ];
+
+  void addTag(String tag) {
+    setState(() {
+      selectedTags.add(tag);
+    });
+  }
+
+  void removeTag(String tag) {
+    setState(() {
+      selectedTags.remove(tag);
+    });
+  }
+
+  bool isTagSelected(String tag) {
+    return selectedTags.contains(tag);
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -36,11 +52,15 @@ class _ChoiceChipsMSState extends State<ChoiceChipsMS> {
         children: [
           Wrap(
             spacing: 8.0,
-            children: tags.map((tag) {
+            children: selectedTags.map((tag) {
               return Chip(
                 label: Text(tag),
-                backgroundColor: Theme.of(context).colorScheme.primary,
+                backgroundColor: Theme.of(context).colorScheme.onPrimary,
                 labelStyle: const TextStyle(color: Colors.white),
+                deleteIconColor: const Color.fromARGB(255, 109, 109, 109),
+                onDeleted: () {
+                  removeTag(tag);
+                },
               );
             }).toList(),
           ),
@@ -48,15 +68,27 @@ class _ChoiceChipsMSState extends State<ChoiceChipsMS> {
             width: size.width * 0.05,
           ),
           ChipsChoice.multiple(
-            choiceCheckmark: true,
-            value: tags,
-            onChanged: (val) => setState(() => tags = val),
+            value: selectedTags,
+            onChanged: (val) {
+              for (String tag in val) {
+                if (!isTagSelected(tag)) {
+                  addTag(tag);
+                }
+              }
+              for (String tag in selectedTags) {
+                if (!val.contains(tag)) {
+                  removeTag(tag);
+                }
+              }
+            },
             choiceItems: C2Choice.listFrom(
-                source: options, value: (i, v) => v, label: (i, v) => v),
+              source: options,
+              value: (i, v) => v,
+              label: (i, v) => v,
+            ),
             choiceStyle: C2ChipStyle.filled(
-              color: Theme.of(context).colorScheme.primary,
-              selectedStyle: C2ChipStyle(
-                  backgroundColor: Theme.of(context).colorScheme.onPrimary),
+              color: Colors.black,
+              selectedStyle: const C2ChipStyle(backgroundColor: Colors.black),
             ),
           ),
         ],

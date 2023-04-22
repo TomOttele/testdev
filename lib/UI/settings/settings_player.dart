@@ -300,12 +300,70 @@ class _SettingPageState extends State<SettingPage> {
               //  Email
               //
               ListTile(
-                  tileColor: Theme.of(context).colorScheme.onPrimary,
                   shape: const RoundedRectangleBorder(
                       borderRadius:
                           BorderRadius.vertical(top: Radius.circular(15))),
-                  title: Text('Email',
-                      style: Theme.of(context).textTheme.bodyLarge),
+                  tileColor: Theme.of(context).colorScheme.onPrimary,
+                  title: const Text(
+                    'Email',
+                    maxLines: 1,
+                  ),
+                  trailing: const Text(
+                    'tom.ottele@gmail.com',
+                    maxLines: 1,
+                  ),
+                  onTap: () {
+                    showModalBottomSheet(
+                      backgroundColor:
+                          Theme.of(context).colorScheme.primaryContainer,
+                      isScrollControlled: true,
+                      shape: const RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.vertical(top: Radius.circular(15))),
+                      context: context,
+                      builder: (context) {
+                        return Column(
+                            mainAxisSize: MainAxisSize.max,
+                            children: <Widget>[
+                              ListTile(
+                                title: Text('Change credentials',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .displayLarge),
+                              ),
+                              const SizedBox(height: 10),
+                              const Padding(
+                                  padding: EdgeInsets.all(8),
+                                  child: TextForm(
+                                    labelText: 'Email',
+                                    maxLenght: 30,
+                                  )),
+                              const SizedBox(height: 15),
+                              const Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: TextForm(
+                                  labelText: 'Password',
+                                  maxLenght: 100,
+                                ),
+                              ),
+                            ]);
+                      },
+                    );
+                  }),
+              //
+              ListTile(
+                  shape: const RoundedRectangleBorder(
+                      borderRadius:
+                          BorderRadius.vertical(bottom: Radius.circular(15))),
+                  tileColor: Theme.of(context).colorScheme.onPrimary,
+                  title: const Text(
+                    'Password',
+                    maxLines: 1,
+                  ),
+                  trailing: const Text(
+                    '**********',
+                    maxLines: 1,
+                  ),
                   onTap: () {
                     showModalBottomSheet(
                       backgroundColor:
@@ -345,55 +403,6 @@ class _SettingPageState extends State<SettingPage> {
                     );
                   }),
 
-              //
-              //Password
-              //
-              ListTile(
-                  tileColor: Theme.of(context).colorScheme.onPrimary,
-                  shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(15),
-                          bottomRight: Radius.circular(15))),
-                  title: Text('Password',
-                      style: Theme.of(context).textTheme.bodyLarge),
-                  onTap: () {
-                    showModalBottomSheet(
-                      backgroundColor:
-                          Theme.of(context).colorScheme.primaryContainer,
-                      isScrollControlled: true,
-                      shape: const RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.vertical(top: Radius.circular(15))),
-                      context: context,
-                      builder: (context) {
-                        return Column(
-                            mainAxisSize: MainAxisSize.max,
-                            children: <Widget>[
-                              ListTile(
-                                title: Text('Change credentials',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .displayLarge),
-                              ),
-                              const SizedBox(height: 10),
-                              const Padding(
-                                  padding: EdgeInsets.all(8),
-                                  child: TextForm(
-                                    labelText: 'Email',
-                                    maxLenght: 30,
-                                  )),
-                              const SizedBox(height: 15),
-                              const Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: TextForm(
-                                  labelText: 'Password',
-                                  maxLenght: 100,
-                                ),
-                              ),
-                            ]);
-                      },
-                    );
-                  }),
               //
               // SizedBox
               //

@@ -44,22 +44,74 @@ class _BirthdayInputWidgetState extends State<BirthdayInputWidget> {
       children: [
         Row(
           children: [
-            Container(
-              width: size.width * 0.16,
-              height: size.height * 0.092,
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.onPrimary,
-                borderRadius: BorderRadius.circular(12),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: Container(
+                width: size.width * 0.16,
+                height: size.height * 0.092,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.onPrimary,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 3, left: 2),
+                  child: Column(children: [
+                    const Center(child: Text('Day')),
+                    Center(
+                      child: TextField(
+                        textAlign: TextAlign.center,
+                        maxLength: 2,
+                        controller: _dayController,
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          counterText: '',
+                          enabledBorder: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                          filled: true,
+                          fillColor: Theme.of(context).colorScheme.onPrimary,
+                          hintText: 'dd',
+                        ),
+                        onChanged: (value) {
+                          if (value.isEmpty) {
+                          } else {
+                            final day = int.tryParse(value);
+                            if (day != null && day >= 1 && day <= 31) {
+                              _errorMessage = null;
+                            } else {
+                              _errorMessage = 'Invalid';
+                            }
+                          }
+                          _updateBirthday();
+                          setState(() {});
+                        },
+                        onSubmitted: (_) {
+                          // Move focus to second text field
+                          FocusScope.of(context).requestFocus(_monthFocusNode);
+                        },
+                      ),
+                    ),
+                  ]),
+                ),
               ),
-              child: Padding(
-                padding: const EdgeInsets.only(top: 3, left: 2),
-                child: Column(children: [
-                  const Center(child: Text('Day')),
-                  Center(
-                    child: TextField(
+            ),
+            const SizedBox(width: 20),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: Container(
+                width: size.width * 0.16,
+                height: size.height * 0.092,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.onPrimary,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 3, left: 2),
+                  child: Column(children: [
+                    const Center(child: Text('Month')),
+                    TextField(
+                      focusNode: _monthFocusNode,
                       textAlign: TextAlign.center,
                       maxLength: 2,
-                      controller: _dayController,
+                      controller: _monthController,
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
                         counterText: '',
@@ -67,13 +119,13 @@ class _BirthdayInputWidgetState extends State<BirthdayInputWidget> {
                         focusedBorder: InputBorder.none,
                         filled: true,
                         fillColor: Theme.of(context).colorScheme.onPrimary,
-                        hintText: 'dd',
+                        hintText: 'mm',
                       ),
                       onChanged: (value) {
                         if (value.isEmpty) {
                         } else {
-                          final day = int.tryParse(value);
-                          if (day != null && day >= 1 && day <= 31) {
+                          final month = int.tryParse(value);
+                          if (month != null && month >= 1 && month <= 12) {
                             _errorMessage = null;
                           } else {
                             _errorMessage = 'Invalid';
@@ -83,103 +135,59 @@ class _BirthdayInputWidgetState extends State<BirthdayInputWidget> {
                         setState(() {});
                       },
                       onSubmitted: (_) {
-                        // Move focus to second text field
-                        FocusScope.of(context).requestFocus(_monthFocusNode);
+                        // Move focus to third text field
+                        FocusScope.of(context).requestFocus(_yearFocusNode);
                       },
                     ),
-                  ),
-                ]),
+                  ]),
+                ),
               ),
             ),
             const SizedBox(width: 20),
-            Container(
-              width: size.width * 0.16,
-              height: size.height * 0.092,
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.onPrimary,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.only(top: 3, left: 2),
-                child: Column(children: [
-                  const Center(child: Text('Month')),
-                  TextField(
-                    focusNode: _monthFocusNode,
-                    textAlign: TextAlign.center,
-                    maxLength: 2,
-                    controller: _monthController,
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                      counterText: '',
-                      enabledBorder: InputBorder.none,
-                      focusedBorder: InputBorder.none,
-                      filled: true,
-                      fillColor: Theme.of(context).colorScheme.onPrimary,
-                      hintText: 'mm',
-                    ),
-                    onChanged: (value) {
-                      if (value.isEmpty) {
-                      } else {
-                        final month = int.tryParse(value);
-                        if (month != null && month >= 1 && month <= 12) {
-                          _errorMessage = null;
-                        } else {
-                          _errorMessage = 'Invalid';
-                        }
-                      }
-                      _updateBirthday();
-                      setState(() {});
-                    },
-                    onSubmitted: (_) {
-                      // Move focus to third text field
-                      FocusScope.of(context).requestFocus(_yearFocusNode);
-                    },
-                  ),
-                ]),
-              ),
-            ),
-            const SizedBox(width: 20),
-            Container(
-              width: size.width * 0.16,
-              height: size.height * 0.092,
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.onPrimary,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.only(top: 3, left: 2),
-                child: Column(
-                  children: [
-                    const Center(child: Text('Year')),
-                    TextField(
-                      focusNode: _yearFocusNode,
-                      textAlign: TextAlign.center,
-                      maxLength: 4,
-                      controller: _yearController,
-                      keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
-                        counterText: '',
-                        enabledBorder: InputBorder.none,
-                        focusedBorder: InputBorder.none,
-                        filled: true,
-                        fillColor: Theme.of(context).colorScheme.onPrimary,
-                        hintText: 'yyyy',
-                      ),
-                      onChanged: (value) {
-                        if (value.isEmpty) {
-                        } else {
-                          final year = int.tryParse(value);
-                          if (year != null && year >= 1950 && year <= 2022) {
-                            _errorMessage = null;
+            ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: Container(
+                width: size.width * 0.16,
+                height: size.height * 0.092,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.onPrimary,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 3, left: 2),
+                  child: Column(
+                    children: [
+                      const Center(child: Text('Year')),
+                      TextField(
+                        focusNode: _yearFocusNode,
+                        textAlign: TextAlign.center,
+                        maxLength: 4,
+                        controller: _yearController,
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          counterText: '',
+                          enabledBorder: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                          filled: true,
+                          fillColor: Theme.of(context).colorScheme.onPrimary,
+                          hintText: 'yyyy',
+                        ),
+                        onChanged: (value) {
+                          if (value.isEmpty) {
                           } else {
-                            _errorMessage = 'Invalid ';
+                            final year = int.tryParse(value);
+                            if (year != null && year >= 1950 && year <= 2022) {
+                              _errorMessage = null;
+                            } else {
+                              _errorMessage = 'Invalid ';
+                            }
                           }
-                        }
-                        _updateBirthday();
-                        setState(() {});
-                      },
-                    ),
-                  ],
+                          _updateBirthday();
+                          setState(() {});
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
