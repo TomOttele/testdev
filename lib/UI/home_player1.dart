@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:testdev/UI/widgets/avatar_round_route.dart';
+import 'package:testdev/UI/widgets/calendar_preview.dart';
+import 'package:testdev/UI/widgets/separator.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -41,7 +43,11 @@ class _HomeScreenState extends State<HomeScreen> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: const [
-              Text('Dreh den Swag auf'),
+              Separator(),
+              CalendarPreview(
+                day: 'Today',
+                time: '17:30',
+              )
             ],
           ),
         ),

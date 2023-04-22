@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:testdev/UI/widgets/birthday_form.dart';
 import 'package:testdev/UI/widgets/choicechips_ms.dart';
 import 'package:testdev/UI/widgets/dropdown_button.dart';
+import 'package:testdev/UI/widgets/listtile_setting.dart';
 import 'package:testdev/UI/widgets/number_form.dart';
 import 'package:testdev/UI/widgets/separator.dart';
 import 'package:testdev/UI/widgets/text_form.dart';
@@ -156,6 +157,7 @@ class _SettingsPersonalInformationState
 
               Text('Section 2',
                   style: Theme.of(context).textTheme.displayMedium),
+              const Separator(),
               const Text('Birthday'),
               const BirthdayInputWidget(),
 
@@ -189,7 +191,7 @@ class _SettingsPersonalInformationState
                       labelText: 'Cloth size'),
                   NumberForm(
                       width: size.width * 0.4,
-                      labelText: 'Show size',
+                      labelText: 'Shoe size',
                       maxLenght: 3,
                       hintText: ''),
                 ],
@@ -260,6 +262,36 @@ class _SettingsPersonalInformationState
                           ))
                       .toList()),
               const Separator(),
+//
+//
+//
+              Container(
+                height: size.height * 0.073,
+                width: size.width * 1,
+                color: Theme.of(context).colorScheme.onPrimary,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(children: [
+                    const Text(
+                      'Position',
+                      style: TextStyle(fontSize: 15),
+                    ),
+                    Wrap(
+                        children: _selectedItems
+                            .map((e) => Chip(
+                                  backgroundColor:
+                                      Theme.of(context).colorScheme.onPrimary,
+                                  label: Text(
+                                    e,
+                                    selectionColor: Colors.blue,
+                                  ),
+                                ))
+                            .toList()),
+                  ]),
+                ),
+              ),
+
+              const Separator(),
               Text(
                 'Nationalteam',
                 style: Theme.of(context).textTheme.bodyMedium,
@@ -297,6 +329,42 @@ class _SettingsPersonalInformationState
               Text('Medical information',
                   style: Theme.of(context).textTheme.displayMedium),
               const Separator(),
+              const ListTileSetting(
+                title: 'Adress',
+                trailing: '12,rue Jean Schmit L-4844 Olm',
+                maxLines: 3,
+              ),
+              const Separator(),
+
+              const ListTileSetting(
+                  title: 'Telephone', trailing: '+352 621 373 383'),
+              const Separator(),
+              const ListTileSetting(title: 'Birthday', trailing: '24'),
+              const Separator(),
+
+              const ListTileSetting(
+                  title: 'Nationality', trailing: 'Luxembourgish'),
+              const Separator(),
+              const ListTileSetting(title: 'Height', trailing: '178 cm'),
+              const Separator(),
+              const ListTileSetting(title: 'Weight', trailing: '83 kg'),
+              const Separator(),
+              const ListTileSetting(title: 'Cloth size', trailing: 'L'),
+              const Separator(),
+              const ListTileSetting(title: 'Shoe size', trailing: '46'),
+              const Separator(),
+              const ListTileSetting(title: 'Preferred foot', trailing: 'Left'),
+              const Separator(),
+              const ListTileSetting(title: 'Shirt number', trailing: '8'),
+              const Separator(),
+              /*Column(
+                children: const [
+                  SwipeToDeleteListView(
+                    itemsTrailing: ['1', '2', '3'],
+                    itemsTitle: ['1', '2', '3'],
+                  ),
+                ],
+              )*/
             ],
           ),
         ),
