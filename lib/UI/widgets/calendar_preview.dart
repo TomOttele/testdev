@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:testdev/UI/widgets/dropdown_button.dart';
 import 'package:testdev/UI/widgets/separator.dart';
+
+import 'elevatedbutton_press.dart';
 
 class CalendarPreview extends StatefulWidget {
   final String day;
@@ -23,12 +24,12 @@ class _CalendarPreviewState extends State<CalendarPreview> {
       height: size.height * 0.2,
       width: size.width * 1,
       child: Padding(
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.only(top: 12, left: 10, bottom: 5, right: 10),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Expanded(
-              flex: 3,
+              flex: 2,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -36,7 +37,7 @@ class _CalendarPreviewState extends State<CalendarPreview> {
                   Text(
                     widget.day,
                     style: const TextStyle(
-                        fontSize: 24, fontWeight: FontWeight.bold),
+                        fontSize: 23, fontWeight: FontWeight.bold),
                   ),
                   Text(
                     widget.time,
@@ -45,6 +46,7 @@ class _CalendarPreviewState extends State<CalendarPreview> {
                 ],
               ),
             ),
+            const Expanded(flex: 1, child: SizedBox()),
             Expanded(
               flex: 7,
               child: Column(
@@ -54,13 +56,16 @@ class _CalendarPreviewState extends State<CalendarPreview> {
                     'Training',
                     style: Theme.of(context).textTheme.displayMedium,
                   ),
-                  const Separator(),
-                  DropDownMenu(
-                    items: const ['Present', 'Late', 'Absent'],
-                    labelText: 'Availability',
-                    width: size.width * 0.4,
-                    color: Colors.grey,
+                  Text(
+                    'Stadium um Bierg',
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
+                  const Separator(),
+                  const Separator(),
+                  Expanded(
+                      child: Container(
+                          alignment: Alignment.center,
+                          child: const AvailabilityButton())),
                 ],
               ),
             )

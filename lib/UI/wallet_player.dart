@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:testdev/UI/widgets/listtile_transaction.dart';
 import 'package:testdev/UI/widgets/xchoicechip_data.dart';
 import 'package:testdev/UI/widgets/xchoicechip.dart';
 import 'package:testdev/UI/widgets/dropdown_button.dart';
@@ -321,55 +322,41 @@ class _WalletPageState extends State<WalletPage> {
                       SingleChildScrollView(
                         child: SafeArea(
                           child: Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Column(children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
+                            padding: const EdgeInsets.only(
+                                top: 12.0, bottom: 12, left: 6, right: 6),
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    'Transactions',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .displaySmall,
-                                  )
-                                ],
-                              ),
-                              Center(
-                                child: Table(
-                                  columnWidths: const {
-                                    0: FractionColumnWidth(0.05),
-                                    1: FractionColumnWidth(0.3),
-                                    2: FractionColumnWidth(0.35),
-                                    3: FractionColumnWidth(0.15), //2. Column
-                                    4: FractionColumnWidth(0.15), //3. Column
-                                  },
-                                  children: [
-                                    buildRow([
-                                      'Y',
-                                      'Cristiano Ronaldo',
-                                      'Training late',
-                                      '10.05',
-                                      '315€'
-                                    ]),
-                                    buildRow([
-                                      'X',
-                                      'Lionel Messi',
-                                      'Training late',
-                                      '10.05',
-                                      '315€'
-                                    ]),
-                                    buildRow([
-                                      'X',
-                                      'Lionel Messi',
-                                      'Training late',
-                                      '10.05',
-                                      '315€'
-                                    ])
-                                  ],
-                                ),
-                              ),
-                              SizedBox(height: size.height * 0.2)
-                            ]),
+                                  const Text('   19.05.23'),
+                                  const Transaction(
+                                      transactionType: TransactionType.paid,
+                                      transactionAmout: '250',
+                                      transactionInfo: 'Pissed in shower',
+                                      receptient: 'Lionel Messi'),
+                                  const Transaction(
+                                      transactionType: TransactionType.unpaid,
+                                      transactionAmout: '250',
+                                      transactionInfo: 'Late - Training',
+                                      receptient: 'Lionel Messi'),
+                                  const Separator(),
+                                  const Text('   17.05.23'),
+                                  const Transaction(
+                                      transactionType: TransactionType.paid,
+                                      transactionAmout: '250',
+                                      transactionInfo: 'Pissed in shower',
+                                      receptient: 'Lionel Messi'),
+                                  const Transaction(
+                                      transactionType: TransactionType.paid,
+                                      transactionAmout: '250',
+                                      transactionInfo: 'Pissed in shower',
+                                      receptient: 'Lionel Messi'),
+                                  const Transaction(
+                                      transactionType: TransactionType.paid,
+                                      transactionAmout: '250',
+                                      transactionInfo: 'Pissed in shower',
+                                      receptient: 'Lionel Messi'),
+                                  SizedBox(height: size.height * 0.2)
+                                ]),
                           ),
                         ),
                       ),
@@ -382,46 +369,22 @@ class _WalletPageState extends State<WalletPage> {
                         child: SafeArea(
                           child: Padding(
                             padding: const EdgeInsets.all(12.0),
-                            child: Column(children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Me',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .displaySmall,
-                                  )
-                                ],
-                              ),
-                              Center(
-                                child: Table(
-                                  columnWidths: const {
-                                    0: FractionColumnWidth(0.08),
-                                    1: FractionColumnWidth(0.56),
-                                    2: FractionColumnWidth(0.20), //2. Column
-                                    3: FractionColumnWidth(0.16), //3. Column
-                                  },
-                                  children: [
-                                    buildRow([
-                                      'Y',
-                                      'Training late',
-                                      '10.05',
-                                      '315€'
-                                    ]),
-                                    buildRow([
-                                      'X',
-                                      'Training late',
-                                      '10.05',
-                                      '315€'
-                                    ]),
-                                    buildRow(
-                                        ['X', 'Training late', '10.05', '315€'])
-                                  ],
-                                ),
-                              ),
-                              SizedBox(height: size.height * 0.2)
-                            ]),
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: const [
+                                  Text('   19.05.23'),
+                                  Transaction(
+                                      transactionType: TransactionType.paid,
+                                      transactionAmout: '250',
+                                      transactionInfo: 'Pissed in shower',
+                                      receptient: 'Lionel Messi'),
+                                  Transaction(
+                                      transactionType: TransactionType.unpaid,
+                                      transactionAmout: '250',
+                                      transactionInfo: 'Late - Training',
+                                      receptient: 'Lionel Messi'),
+                                  Separator(),
+                                ]),
                           ),
                         ),
                       ),
@@ -435,36 +398,19 @@ class _WalletPageState extends State<WalletPage> {
                           child: Padding(
                             padding: const EdgeInsets.all(12.0),
                             child: Column(children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Leaderboard',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .displaySmall,
-                                  )
-                                ],
-                              ),
                               Center(
                                 child: Table(
                                   columnWidths: const {
-                                    0: FractionColumnWidth(0.07),
+                                    0: FractionColumnWidth(0.10),
                                     1: FractionColumnWidth(0.60),
-                                    2: FractionColumnWidth(0.17),
-                                    3: FractionColumnWidth(0.18), //2. Column
+
+                                    2: FractionColumnWidth(0.30), //2. Column
                                   },
                                   children: [
-                                    buildRow([
-                                      '1.',
-                                      'Cristiano Ronaldo',
-                                      '17',
-                                      '1.315€'
-                                    ]),
                                     buildRow(
-                                        ['2.', 'Lionel Messi', '15', '315€']),
-                                    buildRow(
-                                        ['3.', 'Sven Schmit', '10', '315€'])
+                                        ['1.', 'Cristiano Ronaldo', '1.315€']),
+                                    buildRow(['2.', 'Lionel Messi', '315€']),
+                                    buildRow(['3.', 'Sven Schmit', '315€'])
                                   ],
                                 ),
                               ),
@@ -697,7 +643,7 @@ class StackItem3 extends StatelessWidget {
                           sides: 6,
                           borderRadius: 8,
                           child: Container(
-                            color: Color.fromARGB(255, 128, 44, 6),
+                            color: const Color.fromARGB(255, 128, 44, 6),
                             padding: const EdgeInsets.all(3.0),
                             child: ClipPolygon(
                               sides: 6,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:testdev/UI/widgets/dropdown_button.dart';
 
 class ChatPage extends StatelessWidget {
   const ChatPage({Key? key}) : super(key: key);
@@ -7,6 +8,7 @@ class ChatPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
@@ -14,7 +16,14 @@ class ChatPage extends StatelessWidget {
         title: Text("Chats", style: Theme.of(context).textTheme.displayLarge),
       ),
       body: Column(
-        children: const [],
+        children: [
+          DropDownMenu(
+            items: const ['Present', 'Late', 'Absent'],
+            labelText: 'Availability',
+            width: size.width * 0.4,
+            color: Colors.teal,
+          ),
+        ],
       ),
     );
   }

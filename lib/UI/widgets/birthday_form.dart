@@ -58,6 +58,7 @@ class _BirthdayInputWidgetState extends State<BirthdayInputWidget> {
                     const Center(child: Text('Day')),
                     Center(
                       child: TextField(
+                       
                         textAlign: TextAlign.center,
                         maxLength: 2,
                         controller: _dayController,
@@ -147,7 +148,7 @@ class _BirthdayInputWidgetState extends State<BirthdayInputWidget> {
             ClipRRect(
               borderRadius: BorderRadius.circular(12),
               child: Container(
-                width: size.width * 0.16,
+                width: size.width * 0.2,
                 height: size.height * 0.092,
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.onPrimary,

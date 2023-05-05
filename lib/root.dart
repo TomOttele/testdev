@@ -44,60 +44,62 @@ class _RootWidgetState extends State<RootWidget> {
         children: [
           IndexedStack(
             index: _currentIndex,
-            children: [
-              const HomePage(),
-              const WalletPage(),
+            children: const [
+              HomePage(),
+              WalletPage(),
               ChatPage(),
-              const PlayerStat(),
-              const MorePage()
+              PlayerStat(),
+              MorePage()
             ],
           ),
           Align(
             alignment: const Alignment(0, 1),
             child: Padding(
               padding: const EdgeInsets.only(left: 57, right: 57, bottom: 5),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(20),
-                // child: ScrollToHideWidget(
-                // controller: controller,
-                child: BottomNavigationBar(
-                  backgroundColor: Theme.of(context).bottomAppBarTheme.color,
-                  type: BottomNavigationBarType.fixed,
-                  showSelectedLabels: false,
-                  elevation: 0,
-                  showUnselectedLabels: false,
-                  onTap: (index) {
-                    setState(() {
-                      _currentIndex = index;
-                    });
-                  },
-                  currentIndex: _currentIndex,
-                  unselectedItemColor: Colors.grey,
-                  selectedItemColor: Colors.white,
-                  items: const [
-                    BottomNavigationBarItem(
-                      icon: Icon(
-                        Icons.home,
+              child: SafeArea(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  // child: ScrollToHideWidget(
+                  // controller: controller,
+                  child: BottomNavigationBar(
+                    backgroundColor: Theme.of(context).bottomAppBarTheme.color,
+                    type: BottomNavigationBarType.fixed,
+                    showSelectedLabels: false,
+                    elevation: 0,
+                    showUnselectedLabels: false,
+                    onTap: (index) {
+                      setState(() {
+                        _currentIndex = index;
+                      });
+                    },
+                    currentIndex: _currentIndex,
+                    unselectedItemColor: Colors.grey,
+                    selectedItemColor: Colors.white,
+                    items: const [
+                      BottomNavigationBarItem(
+                        icon: Icon(
+                          Icons.home,
+                        ),
+                        label: 'Home',
                       ),
-                      label: 'Home',
-                    ),
-                    BottomNavigationBarItem(
-                      icon: Icon(Icons.savings),
-                      label: 'Wallet',
-                    ),
-                    BottomNavigationBarItem(
-                      icon: Icon(Icons.chat),
-                      label: 'Chat',
-                    ),
-                    BottomNavigationBarItem(
-                      icon: Icon(Icons.assessment),
-                      label: 'Stat',
-                    ),
-                    BottomNavigationBarItem(
-                      icon: Icon(Icons.menu),
-                      label: 'More',
-                    ),
-                  ],
+                      BottomNavigationBarItem(
+                        icon: Icon(Icons.savings),
+                        label: 'Wallet',
+                      ),
+                      BottomNavigationBarItem(
+                        icon: Icon(Icons.chat),
+                        label: 'Chat',
+                      ),
+                      BottomNavigationBarItem(
+                        icon: Icon(Icons.assessment),
+                        label: 'Stat',
+                      ),
+                      BottomNavigationBarItem(
+                        icon: Icon(Icons.menu),
+                        label: 'More',
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
