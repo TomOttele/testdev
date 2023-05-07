@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:testdev/UI/widgets/avatar_round_route.dart';
+import 'package:testdev/UI/widgets/calendar_preview%20copy.dart';
 import 'package:testdev/UI/widgets/calendar_preview.dart';
 import 'package:testdev/UI/widgets/separator.dart';
 
@@ -47,7 +48,9 @@ class _HomeScreenState extends State<HomeScreen> {
               CalendarPreview(
                 day: 'Today',
                 time: '17:30',
-              )
+              ),
+              Separator(),
+              CalendarPreview2(day: 'Today', time: '17:30')
             ],
           ),
         ),

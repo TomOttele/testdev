@@ -21,7 +21,7 @@ class TextForm extends StatelessWidget {
       borderRadius: BorderRadius.circular(12),
       child: SizedBox(
         width: width ?? size.width * 1,
-        height: size.height * 0.073,
+        height: size.height * 0.1,
         child: TextFormField(
           maxLength: maxLenght,
           decoration: InputDecoration(

@@ -3,7 +3,8 @@ import 'package:flutter_polygon/flutter_polygon.dart';
 import 'package:circular_profile_avatar/circular_profile_avatar.dart';
 
 class AvatarPolygone extends StatefulWidget {
-  const AvatarPolygone({super.key});
+  final String? profilePicture;
+  const AvatarPolygone({super.key, this.profilePicture});
 
   @override
   State<AvatarPolygone> createState() => _AvatarPolygoneState();
@@ -23,7 +24,8 @@ class _AvatarPolygoneState extends State<AvatarPolygone> {
           borderRadius: 8,
           child: CircularProfileAvatar(
             radius: 20,
-            'https://i.goalzz.com/?i=ashraf-zamrani%2Flionelmessi.gif',
+            widget.profilePicture ??
+                'https://i.goalzz.com/?i=ashraf-zamrani%2Flionelmessi.gif',
             borderWidth: 1,
           ),
         ),

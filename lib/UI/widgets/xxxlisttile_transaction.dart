@@ -1,37 +1,66 @@
 import 'package:flutter/material.dart';
 import 'package:testdev/UI/widgets/avatar_polygone.dart';
 
-class TransactionWallet extends StatefulWidget {
+enum TransactionStatus { paid, unpaid }
+
+class Transaction extends StatefulWidget {
+  final TransactionStatus transactionStatus;
   final String transactionAmount, transactionInfo, player;
   final String? profilePicture;
 
-  const TransactionWallet(
+  const Transaction(
       {Key? key,
       this.profilePicture,
+      required this.transactionStatus,
       required this.transactionAmount,
       required this.transactionInfo,
       required this.player})
       : super(key: key);
 
   @override
-  State<TransactionWallet> createState() => _TransactionState();
+  State<Transaction> createState() => _TransactionState();
 }
 
-class _TransactionState extends State<TransactionWallet> {
-  bool _isPaid = false;
+class _TransactionState extends State<Transaction> {
+  late TransactionStatus _transactionStatus;
 
-  void _transactionStatus() {
-    setState(() {
-      _isPaid = !_isPaid;
-    });
+  @override
+  void initState() {
+    super.initState();
+    _transactionStatus = widget.transactionStatus;
   }
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
 
+    String transactionStatusName;
+    IconData transactionIconData;
+    Color color;
+    switch (widget.transactionStatus) {
+      case TransactionStatus.paid:
+        transactionStatusName = "Paid";
+        transactionIconData = Icons.arrow_upward;
+        color = Colors.green;
+        break;
+      case TransactionStatus.unpaid:
+        transactionStatusName = "Unpaid";
+        transactionIconData = Icons.arrow_downward;
+        color = Colors.red;
+        break;
+    }
     return GestureDetector(
-      onLongPress: _transactionStatus,
+      onTap: () {
+        setState(
+          () {
+            if (_transactionStatus == TransactionStatus.paid) {
+              _transactionStatus = TransactionStatus.unpaid;
+            } else {
+              _transactionStatus = TransactionStatus.paid;
+            }
+          },
+        );
+      },
       child: Container(
         height: size.height * 0.095,
         margin: const EdgeInsets.all(9.0),
@@ -55,13 +84,13 @@ class _TransactionState extends State<TransactionWallet> {
                     child: Container(
                       width: 12.0,
                       height: 12.0,
-                      decoration: const BoxDecoration(
-                        color: Colors.green,
+                      decoration: BoxDecoration(
+                        color: color,
                         shape: BoxShape.circle,
                       ),
-                      child: const FittedBox(
+                      child: FittedBox(
                         child: Icon(
-                          Icons.arrow_upward,
+                          transactionIconData,
                           color: Colors.white,
                         ),
                       ),
@@ -109,10 +138,10 @@ class _TransactionState extends State<TransactionWallet> {
                         ),
                       ),
                       Text(
-                        _isPaid ? 'Paid' : 'Unpaid',
+                        transactionStatusName,
                         style: TextStyle(
                           fontSize: 13,
-                          color: _isPaid ? Colors.green : Colors.red,
+                          color: color,
                         ),
                       ),
                     ],

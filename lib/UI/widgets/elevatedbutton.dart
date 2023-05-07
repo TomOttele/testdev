@@ -9,7 +9,10 @@ class ElevatedButtom extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return SizedBox(
+      height: size.height * 0.055,
+      width: size.width * 0.7,
       child: ElevatedButton(
         onPressed: onPressed,
         style: ButtonStyle(
@@ -19,7 +22,7 @@ class ElevatedButtom extends StatelessWidget {
             ),
             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
               RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
+                borderRadius: BorderRadius.circular(30.0),
               ),
             ),
             backgroundColor: const MaterialStatePropertyAll<Color>(
