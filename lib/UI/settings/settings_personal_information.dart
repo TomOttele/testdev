@@ -139,7 +139,11 @@ class _SettingsPersonalInformationState
           child: SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+              padding: EdgeInsets.only(
+                  top: size.height * 0.01,
+                  left: size.width * 0.01,
+                  right: size.width * 0.01,
+                  bottom: size.height * 0.01),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,

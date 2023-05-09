@@ -24,6 +24,10 @@ class ChatPage extends StatelessWidget {
             width: size.width * 0.4,
             color: Colors.teal,
           ),
+          ElevatedButton(
+              onPressed: () =>
+                  Navigator.of(context).pushNamed("/OnboardingScreenStart"),
+              child: const Text('Press'))
         ],
       ),
     );

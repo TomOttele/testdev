@@ -30,7 +30,7 @@ class _SettingPageState extends State<SettingPage> {
 
 // Checkbox
 
-  final notifications = [
+  final accounts = [
     CheckBoxState(
         title: 'Borussia Dortmund', subtitle: 'U19', icon: Icons.sports),
     CheckBoxState(
@@ -69,6 +69,7 @@ class _SettingPageState extends State<SettingPage> {
                   cell));
         }).toList(),
       );
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -117,7 +118,7 @@ class _SettingPageState extends State<SettingPage> {
                                                 .textTheme
                                                 .displayLarge),
                                       ),
-                                      ...notifications
+                                      ...accounts
                                           .map(buildSingleCheckbox)
                                           .toList(),
                                       const Separator()
@@ -135,8 +136,11 @@ class _SettingPageState extends State<SettingPage> {
               //
               body: SafeArea(
                   child: ListView(
-                      padding: const EdgeInsets.only(
-                          left: 12, right: 12, bottom: 12, top: 0),
+                      padding: EdgeInsets.only(
+                          top: size.height * 0.00,
+                          left: size.width * 0.01,
+                          right: size.width * 0.01,
+                          bottom: size.height * 0.01),
                       children: [
                     //
                     // 1. ListTile (Username and profile picture)
@@ -901,7 +905,7 @@ class _SettingPageState extends State<SettingPage> {
             ),
             value: checkBox.value,
             onChanged: (value) => setState(() {
-              for (var notification in notifications) {
+              for (var notification in accounts) {
                 notification.value = !value!;
               }
 

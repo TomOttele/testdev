@@ -19,9 +19,10 @@ class TextForm extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     return ClipRRect(
       borderRadius: BorderRadius.circular(12),
-      child: SizedBox(
+      child: Container(
+        color: Theme.of(context).colorScheme.onPrimary,
         width: width ?? size.width * 1,
-        height: size.height * 0.1,
+        height: size.height * 0.073,
         child: TextFormField(
           maxLength: maxLenght,
           decoration: InputDecoration(

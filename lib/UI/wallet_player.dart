@@ -206,6 +206,9 @@ class _WalletPageState extends State<WalletPage> {
                                                 const TextForm(
                                                     labelText: 'Reason',
                                                     maxLenght: 30),
+//
+
+                                                const Separator(),
 
                                                 const NumberForm(
                                                     labelText: 'Amount',
@@ -258,6 +261,9 @@ class _WalletPageState extends State<WalletPage> {
                                                         'i.e. Pissed in shower',
                                                     labelText: 'Reason',
                                                     maxLenght: 20),
+                                                //
+
+                                                const Separator(),
 
                                                 //
                                                 const NumberForm(
