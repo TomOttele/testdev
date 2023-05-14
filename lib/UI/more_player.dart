@@ -70,35 +70,39 @@ class _MorePageState extends State<MorePage> with TickerProviderStateMixin {
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text('   19.05.23'),
                             const TransactionWallet(
                                 profilePicture:
                                     'https://b.fssta.com/uploads/application/soccer/headshots/885.png',
                                 transactionAmount: '250',
                                 transactionInfo: 'Pissed in shower',
-                                player: 'Cristiano Ronaldo'),
+                                player: 'Cristiano Ronaldo',
+                                date: '17.05.23'),
                             const TransactionWallet(
                                 profilePicture:
                                     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSfQreMZtxEJvKZx7CD95ncteYL9RGW9rjyTvu3f-HHl2gat-rrqvgeNOhzU3Gq8w8aaHY&usqp=CAU',
                                 transactionAmount: '250',
                                 transactionInfo: 'Late - Training',
-                                player: 'Neymar Jr'),
+                                player: 'Neymar Jr',
+                                date: '17.05.23'),
                             const Separator(),
                             const Text('   17.05.23'),
                             const TransactionWallet(
                                 transactionAmount: '250',
                                 transactionInfo: 'Pissed in shower',
-                                player: 'Lionel Messi'),
+                                player: 'Lionel Messi',
+                                date: '17.05.23'),
                             const TransactionWallet(
                                 profilePicture:
                                     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSfQreMZtxEJvKZx7CD95ncteYL9RGW9rjyTvu3f-HHl2gat-rrqvgeNOhzU3Gq8w8aaHY&usqp=CAU',
                                 transactionAmount: '250',
                                 transactionInfo: 'Pissed in shower',
+                                date: '17.05.23',
                                 player: 'Neymar Jr'),
                             const TransactionWallet(
                                 transactionAmount: '250',
                                 transactionInfo: 'Pissed in shower',
-                                player: 'Lionel Messi'),
+                                player: 'Lionel Messi',
+                                date: '17.05.23'),
                             SizedBox(height: size.height * 0.2)
                           ]),
                     ),
@@ -240,15 +244,17 @@ class _MorePageState extends State<MorePage> with TickerProviderStateMixin {
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: const [
-                            Text('   19.05.23'),
                             TransactionWallet(
-                                transactionAmount: '250',
-                                transactionInfo: 'Pissed in shower',
-                                player: 'Lionel Messi'),
+                              transactionAmount: '250',
+                              transactionInfo: 'Pissed in shower',
+                              player: 'Lionel Messi',
+                              date: '17.05.23',
+                            ),
                             TransactionWallet(
                                 transactionAmount: '250',
                                 transactionInfo: 'Late - Training',
-                                player: 'Lionel Messi'),
+                                player: 'Lionel Messi',
+                                date: '17.05.23'),
                             Separator(),
                           ]),
                     ),

@@ -39,10 +39,16 @@ class _ListTileSettingState extends State<ListTileSetting> {
         overflow: TextOverflow.ellipsis,
         maxLines: 1,
       ),
-      trailing: Text(
-        widget.trailing,
-        overflow: TextOverflow.ellipsis,
-        maxLines: widget.maxLines ?? 1,
+      trailing: Wrap(
+        alignment: WrapAlignment.start,
+        children: [
+          Text(
+            widget.trailing,
+            overflow: TextOverflow.ellipsis,
+            maxLines: widget.maxLines ?? 2,
+            softWrap: true,
+          ),
+        ],
       ),
     );
   }

@@ -1,13 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:testdev/UI/widgets/birthday_form.dart';
-import 'package:testdev/UI/widgets/choicechips_ms.dart';
-import 'package:testdev/UI/widgets/dropdown_button.dart';
-import 'package:testdev/UI/widgets/listtile_setting.dart';
-import 'package:testdev/UI/widgets/number_form.dart';
+import 'package:testdev/UI/widgets/listtile_custom.dart';
 import 'package:testdev/UI/widgets/separator.dart';
-import 'package:testdev/UI/widgets/text_form.dart';
-import '../widgets/telephone_form.dart';
-import '../widgets/toggle_button.dart';
+import '../widgets/divider.dart';
 
 class SettingsPersonalInformation extends StatefulWidget {
   const SettingsPersonalInformation({Key? key}) : super(key: key);
@@ -148,7 +142,153 @@ class _SettingsPersonalInformationState
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Section 1
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.onPrimary,
+                      borderRadius: BorderRadius.circular(
+                        15,
+                      ),
+                    ),
+                    child: Padding(
+                      padding:
+                          EdgeInsets.symmetric(vertical: size.height * 0.01),
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: const [
+                            CustomListTile(
+                                title: 'Name', trailing: 'Cristiano Ronaldo'),
+                            DividerLine(),
+                            CustomListTile(
+                                title: 'Mobile number',
+                                trailing: '+352 661282822'),
+                            DividerLine(),
+                            CustomListTile(
+                                title: 'Adress',
+                                trailing: '8, route d Arlon L-4977 Niederkorn'),
+                          ]),
+                    ),
+                  ),
+
+                  const Separator(),
+                  const Separator(),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.onPrimary,
+                      borderRadius: BorderRadius.circular(
+                        15,
+                      ),
+                    ),
+                    child: Padding(
+                      padding:
+                          EdgeInsets.symmetric(vertical: size.height * 0.01),
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: const [
+                            CustomListTile(
+                                title: 'Birthday', trailing: '22.11.1997'),
+                            DividerLine(),
+                            CustomListTile(
+                                title: 'Nationality',
+                                trailing: 'Luxembourgish'),
+                          ]),
+                    ),
+                  ),
+                  const Separator(),
+                  const Separator(),
+
+                  // Physical Information
+                  Text('  Physical information',
+                      style: Theme.of(context).textTheme.displayMedium),
+                  const Separator(),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.onPrimary,
+                      borderRadius: BorderRadius.circular(
+                        15,
+                      ),
+                    ),
+                    child: Padding(
+                      padding:
+                          EdgeInsets.symmetric(vertical: size.height * 0.01),
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: const [
+                            CustomListTile(title: 'Height', trailing: '189 cm'),
+                            DividerLine(),
+                            CustomListTile(title: 'Weight', trailing: '86 kg'),
+                            DividerLine(),
+                            CustomListTile(title: 'Cloth size', trailing: 'L'),
+                            DividerLine(),
+                            CustomListTile(title: 'Shoe size', trailing: '45'),
+                            DividerLine(),
+                            CustomListTile(
+                                title: 'Preferred foot', trailing: 'Right'),
+                          ]),
+                    ),
+                  ),
+                  const Separator(),
+                  const Separator(),
+
+                  // Football
+                  Text('  Football',
+                      style: Theme.of(context).textTheme.displayMedium),
+                  const Separator(),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.onPrimary,
+                      borderRadius: BorderRadius.circular(
+                        15,
+                      ),
+                    ),
+                    child: Padding(
+                      padding:
+                          EdgeInsets.symmetric(vertical: size.height * 0.01),
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: const [
+                            CustomListTile(
+                                title: 'Shirt number', trailing: '7'),
+                            DividerLine(),
+                            CustomListTile(title: 'Position', trailing: 'ST'),
+                            DividerLine(),
+                            CustomListTile(
+                                title: 'Nationalteam', trailing: 'Yes'),
+                          ]),
+                    ),
+                  ),
+                  const Separator(),
+                  const Separator(),
+
+                  // Conatct person
+                  Text('  Contact person',
+                      style: Theme.of(context).textTheme.displayMedium),
+                  const Separator(),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.onPrimary,
+                      borderRadius: BorderRadius.circular(
+                        15,
+                      ),
+                    ),
+                    child: Padding(
+                      padding:
+                          EdgeInsets.symmetric(vertical: size.height * 0.01),
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: const [
+                            CustomListTile(title: 'Name', trailing: 'Georgina'),
+                            DividerLine(),
+                            CustomListTile(
+                                title: 'Mobile number',
+                                trailing: '+352 621811881'),
+                            DividerLine(),
+                            CustomListTile(
+                                title: 'Relation', trailing: 'Partner'),
+                          ]),
+                    ),
+                  ),
+                  const Separator(), const Separator(),
+                  /*// Section 1
                   Text('Information',
                       style: Theme.of(context).textTheme.displayMedium),
                   const Separator(),
@@ -393,7 +533,7 @@ class _SettingsPersonalInformationState
                         itemsTitle: ['1', '2', '3'],
                       ),
                     ],
-                  )*/
+                  )*/*/
                 ],
               ),
             ),

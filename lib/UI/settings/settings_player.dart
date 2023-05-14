@@ -15,6 +15,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as Path;
 
 import '../widgets/checkbox_state.dart';
+import '../widgets/listtile_custom.dart';
 
 class SettingPage extends StatefulWidget {
   const SettingPage({Key? key}) : super(key: key);
@@ -268,86 +269,28 @@ class _SettingPageState extends State<SettingPage> {
                     //
                     //  Email
                     //
-                    ListTile(
-                      shape: const RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.vertical(top: Radius.circular(15))),
-                      tileColor: Theme.of(context).colorScheme.onPrimary,
-                      title: const Text(
-                        'Email',
-                        maxLines: 1,
-                      ),
-                      trailing: const Text(
-                        'tom.ottele@gmail.com',
-                        maxLines: 1,
-                      ),
-                      onTap: () {
-                        showModalBottomSheet(
-                          backgroundColor:
-                              Theme.of(context).colorScheme.primaryContainer,
-                          isScrollControlled: true,
-                          shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.vertical(
-                                  top: Radius.circular(15))),
-                          context: context,
-                          builder: (context) {
-                            return SizedBox(
-                              height: size.height * 0.9,
-                              child: Padding(
-                                padding: const EdgeInsets.all(12.0),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: <Widget>[
-                                    ListTile(
-                                      title: Text('Change credentials',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .displayLarge),
-                                    ),
-                                    const SizedBox(height: 10),
-                                    const TextForm(
-                                      labelText: 'Email',
-                                      maxLenght: 30,
-                                    ),
-                                    const Separator(),
-                                    const TextForm(
-                                      labelText: 'Password',
-                                      maxLenght: 100,
-                                    ),
-                                    const SizedBox(height: 10),
-                                    InkWell(
-                                      /*onTap: ,*/
-                                      child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: const [
-                                            Text(
-                                              ' Password forgotten?',
-                                              textAlign: TextAlign.end,
-                                            ),
-                                          ]),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
-                        );
-                      },
-                    ),
-                    //
-                    ListTile(
-                      shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.vertical(
-                              bottom: Radius.circular(15))),
-                      tileColor: Theme.of(context).colorScheme.onPrimary,
-                      title: const Text(
-                        'Password',
-                        maxLines: 1,
-                      ),
-                      trailing: const Text(
-                        '**********',
-                        maxLines: 1,
+                    GestureDetector(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.onPrimary,
+                          borderRadius: BorderRadius.circular(
+                            15,
+                          ),
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              vertical: size.height * 0.01),
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: const [
+                                CustomListTile(
+                                    title: 'Email',
+                                    trailing: 'cristiano.ronaldo@gmail.com'),
+                                CustomListTile(
+                                    title: 'Password',
+                                    trailing: '************'),
+                              ]),
+                        ),
                       ),
                       onTap: () {
                         showModalBottomSheet(
@@ -363,8 +306,7 @@ class _SettingPageState extends State<SettingPage> {
                               height: size.height * 0.9,
                               child: Padding(
                                 padding: const EdgeInsets.all(12.0),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
+                                child: ListView(
                                   children: <Widget>[
                                     ListTile(
                                       title: Text('Change credentials',
@@ -404,7 +346,6 @@ class _SettingPageState extends State<SettingPage> {
                       },
                     ),
 
-                    //
                     // SizedBox
                     //
                     const Separator(),

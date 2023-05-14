@@ -102,52 +102,44 @@ class _BirthdayInputWidgetState extends State<BirthdayInputWidget> {
                 width: size.width * 0.16,
                 height: size.height * 0.092,
                 decoration: BoxDecoration(
-                  color: Colors.green,
+                  color: Theme.of(context).colorScheme.onPrimary,
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(top: 5),
                   child: Column(children: [
                     const Center(child: Text('Month')),
-                    Align(
-                      alignment: Alignment.bottomCenter,
-                      child: ClipRRect(
-                        borderRadius: const BorderRadius.only(
-                            bottomLeft: Radius.circular(12),
-                            bottomRight: Radius.circular(12)),
-                        child: TextField(
-                          focusNode: _monthFocusNode,
-                          textAlign: TextAlign.center,
-                          maxLength: 2,
-                          controller: _monthController,
-                          keyboardType: TextInputType.number,
-                          decoration: const InputDecoration(
-                            counterText: '',
-                            enabledBorder: InputBorder.none,
-                            focusedBorder: InputBorder.none,
-                            filled: true,
-                            fillColor: Colors.blue,
-                            hintText: 'mm',
-                          ),
-                          onChanged: (value) {
-                            if (value.isEmpty) {
-                            } else {
-                              final month = int.tryParse(value);
-                              if (month != null && month >= 1 && month <= 12) {
-                                _errorMessage = null;
-                              } else {
-                                _errorMessage = 'Invalid';
-                              }
-                            }
-                            _updateBirthday();
-                            setState(() {});
-                          },
-                          onSubmitted: (_) {
-                            // Move focus to third text field
-                            FocusScope.of(context).requestFocus(_yearFocusNode);
-                          },
-                        ),
+                    TextField(
+                      focusNode: _monthFocusNode,
+                      textAlign: TextAlign.center,
+                      maxLength: 2,
+                      controller: _monthController,
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                        counterText: '',
+                        fillColor: Theme.of(context).colorScheme.onPrimary,
+                        enabledBorder: InputBorder.none,
+                        focusedBorder: InputBorder.none,
+                        filled: true,
+                        hintText: 'mm',
                       ),
+                      onChanged: (value) {
+                        if (value.isEmpty) {
+                        } else {
+                          final month = int.tryParse(value);
+                          if (month != null && month >= 1 && month <= 12) {
+                            _errorMessage = null;
+                          } else {
+                            _errorMessage = 'Invalid';
+                          }
+                        }
+                        _updateBirthday();
+                        setState(() {});
+                      },
+                      onSubmitted: (_) {
+                        // Move focus to third text field
+                        FocusScope.of(context).requestFocus(_yearFocusNode);
+                      },
                     ),
                   ]),
                 ),
