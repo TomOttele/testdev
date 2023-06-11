@@ -28,6 +28,11 @@ Future showToast(String message) async {
 }
 
 class _WalletPageState extends State<WalletPage> {
+  final TextEditingController _textController1 = TextEditingController();
+  final TextEditingController _textController2 = TextEditingController();
+
+  List<String> containerData = [];
+
   List<String> itemsPlayers = [
     'Lionel Messi',
     'Cristiano Ronaldo',
@@ -77,7 +82,8 @@ class _WalletPageState extends State<WalletPage> {
               child: FloatingActionButton(
                 tooltip: 'Add',
                 child: const Icon(Icons.add),
-                onPressed: () => showBottomSheet(
+                onPressed: () => showModalBottomSheet(
+                  isScrollControlled: true,
                   backgroundColor:
                       Theme.of(context).colorScheme.primaryContainer,
                   shape: const RoundedRectangleBorder(
@@ -89,10 +95,11 @@ class _WalletPageState extends State<WalletPage> {
                     return Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: SizedBox(
-                        height: size.height * 0.9,
+                        height: size.height * 0.7,
                         child: DefaultTabController(
                             length: 3,
                             child: Column(
+                              mainAxisSize: MainAxisSize.min,
                               children: [
                                 SizedBox(
                                   child: TabBar(
@@ -122,165 +129,155 @@ class _WalletPageState extends State<WalletPage> {
                                       //
                                       // First TabBar
                                       //
-                                      SingleChildScrollView(
-                                        child: SafeArea(
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(
-                                                top: 12.0,
-                                                bottom: 12,
-                                                left: 6,
-                                                right: 6),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                ListTile(
-                                                  title: Text('Infraction',
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .displayMedium),
+                                      SafeArea(
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(
+                                              top: 12.0,
+                                              bottom: 12,
+                                              left: 6,
+                                              right: 6),
+                                          child: ListView(
+                                            children: [
+                                              ListTile(
+                                                title: Text('Infraction',
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .displayMedium),
+                                              ),
+                                              // Player picker
+                                              const DropDownMenu(
+                                                items: [
+                                                  'Lionel Messi',
+                                                  'Cristiano Ronaldo',
+                                                  'Kylian Mbappé',
+                                                  'Sven Schmit'
+                                                ],
+                                                labelText: 'Choose a player',
+                                              ),
+                                              //
+                                              const Separator(),
+                                              //
+                                              const DropDownMenu(
+                                                items: [
+                                                  'Pissed in shower',
+                                                  'Training late',
+                                                  'Game late',
+                                                  'Wrong Equipment'
+                                                ],
+                                                labelText: 'Infraction',
+                                              ),
+                                              //
+                                              const Separator(),
+                                              //
+                                              //
+                                              const DropDownMenu(
+                                                items: ['18.09', '19.09'],
+                                                labelText: 'Date',
+                                              ),
+                                              const Separator(),
+                                              //
+                                              //
+                                              Center(
+                                                child: ElevatedButtom(
+                                                  onPressed: () {},
+                                                  text: 'Add',
                                                 ),
-                                                // Player picker
-                                                const DropDownMenu(
-                                                  items: [
-                                                    'Lionel Messi',
-                                                    'Cristiano Ronaldo',
-                                                    'Kylian Mbappé',
-                                                    'Sven Schmit'
-                                                  ],
-                                                  labelText: 'Choose a player',
-                                                ),
-                                                //
-                                                const Separator(),
-                                                //
-                                                const DropDownMenu(
-                                                  items: [
-                                                    'Pissed in shower',
-                                                    'Training late',
-                                                    'Game late',
-                                                    'Wrong Equipment'
-                                                  ],
-                                                  labelText: 'Infraction',
-                                                ),
-                                                //
-                                                const Separator(),
-                                                //
-                                                //
-                                                const DropDownMenu(
-                                                  items: ['18.09', '19.09'],
-                                                  labelText: 'Date',
-                                                ),
-                                                const Separator(),
-                                                //
-                                                //
-                                                Center(
-                                                  child: ElevatedButtom(
-                                                    onPressed: () {},
-                                                    text: 'Add',
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
+                                              ),
+                                            ],
                                           ),
                                         ),
                                       ),
                                       //
                                       // Second TabBar
                                       //
-                                      SingleChildScrollView(
-                                        child: SafeArea(
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(
-                                                top: 12.0,
-                                                bottom: 12,
-                                                left: 6,
-                                                right: 6),
-                                            child: Column(
-                                              children: [
-                                                ListTile(
-                                                  title: Text('Expense',
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .displayMedium),
-                                                ),
-                                                const TextForm(
-                                                    labelText: 'Reason',
-                                                    maxLenght: 30),
+                                      SafeArea(
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(
+                                              top: 12.0,
+                                              bottom: 12,
+                                              left: 6,
+                                              right: 6),
+                                          child: ListView(
+                                            children: [
+                                              ListTile(
+                                                title: Text('Expense',
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .displayMedium),
+                                              ),
+                                              const TextForm(
+                                                  labelText: 'Reason',
+                                                  maxLenght: 30),
 //
 
-                                                const Separator(),
+                                              const Separator(),
 
-                                                const NumberForm(
-                                                    labelText: 'Amount',
-                                                    maxLenght: 7),
-                                                //
-                                                const Separator(),
-                                                //
-                                                Center(
-                                                  child: ElevatedButtom(
-                                                    onPressed: () {},
-                                                    text: 'Add',
-                                                  ),
+                                              NumberForm(
+                                                  controller: _textController1,
+                                                  labelText: 'Amount',
+                                                  maxLenght: 7),
+                                              //
+                                              const Separator(),
+                                              //
+                                              Center(
+                                                child: ElevatedButtom(
+                                                  onPressed: () {},
+                                                  text: 'Add',
                                                 ),
-                                              ],
-                                            ),
+                                              ),
+                                            ],
                                           ),
                                         ),
                                       ),
                                       //
                                       // Third TabBar
                                       //
-                                      SingleChildScrollView(
-                                        child: SafeArea(
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(
-                                                top: 12.0,
-                                                bottom: 12,
-                                                left: 6,
-                                                right: 6),
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              mainAxisSize: MainAxisSize.max,
-                                              children: <Widget>[
-                                                //
+                                      SafeArea(
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(
+                                              top: 12.0,
+                                              bottom: 12,
+                                              left: 6,
+                                              right: 6),
+                                          child: ListView(
+                                            children: <Widget>[
+                                              //
 
-                                                ListTile(
-                                                  title: Text(
-                                                      'Create a new infraction',
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .displayMedium),
+                                              ListTile(
+                                                title: Text(
+                                                    'Create a new infraction',
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .displayMedium),
+                                              ),
+                                              //
+
+                                              const TextForm(
+                                                  hintText:
+                                                      'i.e. Pissed in shower',
+                                                  labelText: 'Reason',
+                                                  maxLenght: 20),
+                                              //
+
+                                              const Separator(),
+
+                                              //
+                                              NumberForm(
+                                                hintText: 'i.e. 5€',
+                                                labelText: '€',
+                                                maxLenght: 6,
+                                                controller: _textController2,
+                                              ),
+                                              //
+                                              const Separator(),
+
+                                              Center(
+                                                child: ElevatedButtom(
+                                                  onPressed: () {},
+                                                  text: 'Add',
                                                 ),
-                                                //
-
-                                                const TextForm(
-                                                    hintText:
-                                                        'i.e. Pissed in shower',
-                                                    labelText: 'Reason',
-                                                    maxLenght: 20),
-                                                //
-
-                                                const Separator(),
-
-                                                //
-                                                const NumberForm(
-                                                    hintText: 'i.e. 5€',
-                                                    labelText: '€',
-                                                    maxLenght: 6),
-                                                //
-                                                const Separator(),
-
-                                                Center(
-                                                  child: ElevatedButtom(
-                                                    onPressed: () {},
-                                                    text: 'Add',
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
+                                              ),
+                                            ],
                                           ),
                                         ),
                                       ),
@@ -347,6 +344,11 @@ class _WalletPageState extends State<WalletPage> {
               //
 
               TabBar(
+                //indicatorSize: TabBarIndicatorSize.tab,
+                //indicatorPadding: const EdgeInsets.all(0),
+                indicator: BoxDecoration(
+                    color: Theme.of(context).colorScheme.onPrimary,
+                    borderRadius: BorderRadius.circular(100)),
                 labelStyle: Theme.of(context).textTheme.bodyMedium,
                 isScrollable: true,
                 physics: const BouncingScrollPhysics(

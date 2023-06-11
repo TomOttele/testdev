@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+/*import 'package:flutter/material.dart';
 import 'package:testdev/UI/widgets/birthday_form.dart';
 import 'package:testdev/UI/widgets/number_form.dart';
 import 'package:testdev/UI/widgets/separator.dart';
@@ -144,8 +144,8 @@ class OnboardingScreenStart extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: ListView(
+      padding: const EdgeInsets.all(20),
+      child: Column(
         children: [
           const Spacer(),
           Align(
@@ -519,4 +519,4 @@ class OnboardingScreenChangePassword extends StatelessWidget {
       ),
     );
   }
-}
+}*/

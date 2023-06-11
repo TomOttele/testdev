@@ -7,8 +7,6 @@ import 'package:testdev/root.dart';
 
 import 'package:testdev/theme.dart';
 
-import 'UI/onboarding/onboarding_start.dart';
-
 void main() {
   runApp(ChangeNotifierProvider(
     create: (context) => ThemeService(),
@@ -33,8 +31,8 @@ class MyApp extends StatelessWidget {
             "/SettingPage": (BuildContext context) => const SettingPage(),
             "/SettingsPersonalInformation": (BuildContext context) =>
                 const SettingsPersonalInformation(),
-            "/OnboardingScreenStart": (BuildContext context) =>
-                const Onboarding(),
+            //"/OnboardingScreenStart": (BuildContext context) =>
+            //   const Onboarding(),
           },
           home: const RootWidget());
     });

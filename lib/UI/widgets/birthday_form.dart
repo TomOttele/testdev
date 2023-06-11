@@ -48,7 +48,7 @@ class _BirthdayInputWidgetState extends State<BirthdayInputWidget> {
               borderRadius: BorderRadius.circular(12),
               child: Container(
                 width: size.width * 0.16,
-                height: size.height * 0.092,
+                height: size.height * 0.095,
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.onPrimary,
                 ),
@@ -100,7 +100,7 @@ class _BirthdayInputWidgetState extends State<BirthdayInputWidget> {
               borderRadius: BorderRadius.circular(12),
               child: Container(
                 width: size.width * 0.16,
-                height: size.height * 0.092,
+                height: size.height * 0.095,
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.onPrimary,
                   borderRadius: BorderRadius.circular(12),
@@ -150,7 +150,7 @@ class _BirthdayInputWidgetState extends State<BirthdayInputWidget> {
               borderRadius: BorderRadius.circular(12),
               child: Container(
                 width: size.width * 0.2,
-                height: size.height * 0.092,
+                height: size.height * 0.095,
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.onPrimary,
                   borderRadius: BorderRadius.circular(12),

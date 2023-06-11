@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 class NumberForm extends StatelessWidget {
   final String labelText;
   final String? hintText;
+  final TextEditingController controller;
   final int maxLenght;
   final double? width;
 
@@ -12,7 +13,8 @@ class NumberForm extends StatelessWidget {
       this.hintText,
       required this.labelText,
       required this.maxLenght,
-      this.width})
+      this.width,
+      required this.controller})
       : super(key: key);
 
   @override
@@ -30,6 +32,7 @@ class NumberForm extends StatelessWidget {
             height: size.height * 0.073,
             width: width ?? size.width * 1,
             child: TextFormField(
+              controller: controller,
               keyboardType: TextInputType.number,
               inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               maxLength: maxLenght,
